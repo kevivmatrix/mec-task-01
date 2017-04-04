@@ -55,7 +55,9 @@ feature "CustomerAdmin" do
     scenario "Gender should have all the filters" do
       visit root_path
       filter_section = page.find("#filters_sidebar_section")
-      filter_section.must_have_selector("#q_gender_input select", text: "Contains")
+      filter_section.must_have_selector("#q_gender_input select", text: "Any")
+      filter_section.must_have_selector("#q_gender_input select", text: "Male")
+      filter_section.must_have_selector("#q_gender_input select", text: "Female")
     end
     scenario "Other fields should not have filters" do
       visit root_path
