@@ -1,5 +1,7 @@
 # README
 
+<pre>
+
 Task 1)   Local dev & deploy env.   
 
 Create a fresh Rails 5.1 app, Ruby 2.4.1.   Include these gems:
@@ -26,3 +28,5 @@ Go test-first for these minor mods on your sample application:
   d) limit download links to just csv, and a second copy of the download link *above* the list.     
   e) similarly, add a second results count  up top.  
 	This one should not include pagination links or counts.   Just "N matching #{model_plural}"  
+
+</pre>
