@@ -29,4 +29,23 @@ feature "CustomerAdmin" do
     download_links.wont_have_content "XML"
     download_links.wont_have_content "JSON"
   end
+
+  scenario "Download links should be present at top of the page" do
+    visit root_path
+
+  end
+
+  scenario "Should show a result summary on top of listing" do
+    visit root_path
+    index_header = page.find("#index_header")
+    index_header.must_have_content "2 matching Customers"
+  end
+
+  feature "Filters" do
+    scenario "Name should only have contains filter" do
+      visit root_path
+      filter_section = page.find("#filters_sidebar_section")
+      filter_section.must_have_select
+    end
+  end
 end
