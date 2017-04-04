@@ -21,8 +21,7 @@ ActiveAdmin.register Customer do
     column :phone
     column :city
     column :country
-    column :gender
-    # tag_column :gender # TODO - Breaking Minitest
+    tag_column :gender
     actions
   end
   filter :gender

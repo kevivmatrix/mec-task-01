@@ -4,7 +4,7 @@ one:
   name: MyString
   email: MyString
   phone: MyString
-  gender: MyString
+  gender: :male
   address: MyText
   city: MyString
   country: MyString
@@ -14,7 +14,7 @@ two:
   name: MyString
   email: MyString
   phone: MyString
-  gender: MyString
+  gender: :female
   address: MyText
   city: MyString
   country: MyString
