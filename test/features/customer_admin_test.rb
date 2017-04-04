@@ -43,11 +43,31 @@ feature "CustomerAdmin" do
     index_header.must_have_content "2 matching Customers"
   end
 
-  feature "Filters" do
-    scenario "Name should only have contains filter" do
+  feature "Filter Section" do
+    scenario "Name should only have Contains filter" do
       visit root_path
       filter_section = page.find("#filters_sidebar_section")
-      filter_section.must_have_select
+      filter_section.must_have_selector("#q_name_input select", text: "Contains")
+      filter_section.wont_have_selector("#q_name_input select", text: "Equals")
+      filter_section.wont_have_selector("#q_name_input select", text: "Starts with")
+      filter_section.wont_have_selector("#q_name_input select", text: "Ends with")
+    end
+    scenario "Gender should have all the filters" do
+      visit root_path
+      filter_section = page.find("#filters_sidebar_section")
+      filter_section.must_have_selector("#q_gender_input select", text: "Contains")
+    end
+    scenario "Other fields should not have filters" do
+      visit root_path
+      filter_section = page.find("#filters_sidebar_section")
+      filter_section.wont_have_css("#q_email_input")
+      filter_section.wont_have_css("#q_phone_input")
+      filter_section.wont_have_css("#q_address_input")
+      filter_section.wont_have_css("#q_city_input")
+      filter_section.wont_have_css("#q_country_input")
+      filter_section.wont_have_css("#q_zip_code_input")
+      filter_section.wont_have_css("#q_created_at_input")
+      filter_section.wont_have_css("#q_updated_at_input")
     end
   end
 end

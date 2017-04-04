@@ -8,7 +8,7 @@ ActiveAdmin.register Customer do
       column span: 6 do
         span "#{customers.total_count} matching Customers"
       end
-      column span: 6 do
+      column span: 6, class: "column text-right" do
         content_tag(:span) do
           "Download: #{link_to('CSV', admin_customers_path(format: "csv"))}".html_safe
         end
@@ -24,5 +24,6 @@ ActiveAdmin.register Customer do
     column :country
     actions
   end
-  # filter :name, filters: [ :contains ]
+  filter :gender
+  filter :name, filters: [ :contains ]
 end
