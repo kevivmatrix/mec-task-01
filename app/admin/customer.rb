@@ -18,7 +18,6 @@ ActiveAdmin.register Customer do
     column :code
     column :name
     column :email
-    column :gender
     column :phone
     column :city
     column :country
