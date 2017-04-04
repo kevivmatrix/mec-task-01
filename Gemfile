@@ -59,7 +59,12 @@ gem 'activeadmin', github: 'activeadmin'
 gem 'activeadmin_addons'
 gem 'enumerize'
 gem 'faker'
+gem "minitest-rails"
 
 group :production do
   gem "lograge"
+end
+
+group :test do
+  gem 'minitest-rails-capybara'
 end
