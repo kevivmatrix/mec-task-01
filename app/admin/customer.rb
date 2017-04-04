@@ -5,8 +5,13 @@ ActiveAdmin.register Customer do
     #   text_node "Test"
     # end
     columns id: "index_header" do
-      column span: 12 do
+      column span: 6 do
         span "#{customers.total_count} matching Customers"
+      end
+      column span: 6 do
+        content_tag(:span) do
+          "Download: #{link_to('CSV', admin_customers_path(format: "csv"))}".html_safe
+        end
       end
     end
     # status_tag 'In Progress'

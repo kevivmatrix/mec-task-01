@@ -32,7 +32,9 @@ feature "CustomerAdmin" do
 
   scenario "Download links should be present at top of the page" do
     visit root_path
-
+    index_header = page.find("#index_header")
+    index_header.must_have_content "Download: CSV"
+    index_header.must_have_link "CSV", href: admin_customers_path(format: "csv")
   end
 
   scenario "Should show a result summary on top of listing" do
