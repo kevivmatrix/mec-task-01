@@ -1,7 +1,7 @@
 class Customer < ApplicationRecord
 	extend Enumerize
 	
-	enumerize :sex, in: [:male, :female]
+	enumerize :gender, in: [:male, :female]
 
   def code
     "Customer ##{id}"

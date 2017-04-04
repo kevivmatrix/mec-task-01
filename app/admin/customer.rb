@@ -22,8 +22,12 @@ ActiveAdmin.register Customer do
     column :phone
     column :city
     column :country
+    tag_column :gender
     actions
   end
   filter :gender
   filter :name, filters: [ :contains ]
+
+  permit_params :name, :email, :phone, :gender, 
+                :address, :city, :country, :zip_code
 end

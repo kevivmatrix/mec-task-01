@@ -59,7 +59,8 @@ gem 'activeadmin', github: 'activeadmin'
 gem 'activeadmin_addons'
 gem 'enumerize'
 gem 'faker'
-gem "minitest-rails"
+gem 'minitest-rails'
+gem 'country_select'
 
 group :production do
   gem "lograge"
