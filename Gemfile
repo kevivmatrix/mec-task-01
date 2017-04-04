@@ -40,6 +40,7 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13.0'
   gem 'selenium-webdriver'
+  gem 'pry-byebug'
 end
 
 group :development do
@@ -56,3 +57,9 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'activeadmin', github: 'activeadmin'
 gem 'activeadmin_addons'
+gem 'enumerize'
+gem 'faker'
+
+group :production do
+  gem "lograge"
+end
