@@ -16,8 +16,8 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: mec_task_01_development
+  database: mec_task_01_test
 
 production:
   <<: *default
-  database: mec_task_01_development
+  database: mec_task_01_production
