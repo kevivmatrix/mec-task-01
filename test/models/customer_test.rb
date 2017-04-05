@@ -9,8 +9,10 @@ class CustomerTest < ActiveSupport::TestCase
   	sample_gender_value = Customer::VALID_GENDERS.sample
     valid_gender_customer = FactoryGirl.create(:customer, gender: sample_gender_value)
     assert valid_gender_customer.valid?
+
+    invalid_gender_customer = Faker::Lorem.word
     assert_raises(ActiveRecord::RecordInvalid) do
-    	wrong_gender_customer = FactoryGirl.create(:customer, gender: "wrong_gender")
+    	FactoryGirl.create(:customer, gender: invalid_gender_customer)
     end
   end
 end
