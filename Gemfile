@@ -41,6 +41,7 @@ group :development, :test do
   gem 'capybara', '~> 2.13.0'
   gem 'selenium-webdriver'
   gem 'pry-byebug'
+  gem 'factory_girl_rails', '~> 4.0'
 end
 
 group :development do
@@ -63,7 +64,7 @@ gem 'minitest-rails'
 gem 'country_select'
 
 group :production do
-  gem "lograge"
+  gem 'lograge'
 end
 
 group :test do

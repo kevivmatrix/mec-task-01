@@ -29,4 +29,20 @@ Go test-first for these minor mods on your sample application:
   e) similarly, add a second results count  up top.  
 	This one should not include pagination links or counts.   Just "N matching #{model_plural}"  
 
+Task 2.5)   generalize and test Enumerized field:  
+	- make the gender values a class constant  Customer::VALID_GENDERS
+	- add tests for enumerized field, as seen in that gem.   
+	- add a single model test that checks for the gender constant values
+		- then generalize the other tests to refer to the constant 
+		- add an "unknown" value to the gender list, and see that only the model test breaks.   
+
+	This pattern will come in handy for the next:
+
+Task 3) Convert from fixtures to Factory Girl
+	In the next set, you'll use PG specific types and serialization, so really need to run our test data through the model code.  
+
+	- Add Factory Girl and convert your tests to use it.
+	- add the model test and validation:    a new age field that should be between 18 and 99
+		- model test should use the FG build method
+
 </pre>
