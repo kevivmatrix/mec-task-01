@@ -2,6 +2,7 @@ require "test_helper"
 
 feature "CustomerAdmin" do
   scenario "Index should list only required fields" do
+    customer = FactoryGirl.create(:customer)
     visit root_path
     table_header = page.find("#index_table_customers thead")
     table_header.must_have_content "Name"
@@ -16,14 +17,15 @@ feature "CustomerAdmin" do
   end
 
   scenario "Should list a ID modified field code" do
-    customer_1 = Customer.take
+    customer = FactoryGirl.create(:customer, gender: "male")
     visit root_path
     table_header = page.find("#index_table_customers thead")
     table_header.must_have_content "Code"
-    page.must_have_content "Customer ##{customer_1.id}"
+    page.must_have_content "Customer ##{customer.id}"
   end
 
   scenario "Should not give option to download in XML or JSON" do
+    customer = FactoryGirl.create(:customer)
     visit root_path
     download_links = page.find("#index_footer .download_links")
     download_links.wont_have_content "XML"
@@ -31,6 +33,7 @@ feature "CustomerAdmin" do
   end
 
   scenario "Download links should be present at top of the page" do
+    customer = FactoryGirl.create(:customer)
     visit root_path
     index_header = page.find("#index_header")
     index_header.must_have_content "Download: CSV"
@@ -38,9 +41,12 @@ feature "CustomerAdmin" do
   end
 
   scenario "Should show a result summary on top of listing" do
+    customer_1 = FactoryGirl.create(:customer, gender: "male")
+    customer_2 = FactoryGirl.create(:customer)
+    customer_3 = FactoryGirl.create(:customer)
     visit root_path
     index_header = page.find("#index_header")
-    index_header.must_have_content "2 matching Customers"
+    index_header.must_have_content "3 matching Customers"
   end
 
   feature "Filter Section" do

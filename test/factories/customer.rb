@@ -12,5 +12,6 @@ FactoryGirl.define do
     city "City"
     country "Country"
     zip_code "123456"
+    age 21
   end
 end
