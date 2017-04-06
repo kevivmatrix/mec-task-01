@@ -1,21 +1,19 @@
 require 'test_helper'
 
 class CustomerTest < ActiveSupport::TestCase
-	test "VALID_GENDERS constant should return male and female in a array" do
-		assert_equal Customer::VALID_GENDERS, [ "male", "female" ]
-	end
 
-  test "Gender field should contain value from VALID GENDER constant" do
-  	sample_gender_value = Customer::VALID_GENDERS.sample
-    valid_gender_customer = FactoryGirl.create(:customer, gender: sample_gender_value)
-    assert valid_gender_customer.valid?
-
-    invalid_gender_value = Faker::Lorem.word
-    invalid_gender_customer = FactoryGirl.build(:customer, gender: invalid_gender_value)
-    assert invalid_gender_customer.invalid?
-    assert_equal invalid_gender_customer.errors[:gender], ["is not included in the list"]
+  test "Gender field should be enumerized to correct values"  do
+    desired_genders = %w(male female) 
+    assert_equal Customer::VALID_GENDERS.sort, desired_genders.sort   #should add .sort if we don't care about order
+    desired_genders.each do |gender|
+      assert FactoryGirl.build(:customer, gender: gender).valid?
+    end
+    invalid_customer = FactoryGirl.build(:customer, gender: Faker::Lorem.word)
+    assert invalid_customer.invalid?
+    assert invalid_customer.errors.keys.include?(:gender)
   end
-
+    
+  
   test "Age should be within 18 and 99" do
     valid_age_customer = FactoryGirl.build(:customer, age: 19)
     assert valid_age_customer.valid?
