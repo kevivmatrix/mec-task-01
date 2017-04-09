@@ -9,8 +9,8 @@ class CustomerTest < ActiveSupport::TestCase
 
   test "Favorite colors field should be enumerized to correct values" do
     desired_colors = %w{ 
-      black blue gold green grey indigo ivory green 
-      orange pink purple red silver blue white yellow 
+      black blue gold green grey indigo ivory 
+      orange pink purple red silver white yellow 
     }
     assert test_enumerized(:customer, :favorite_colors, Customer::VALID_COLORS, desired_colors)
   end

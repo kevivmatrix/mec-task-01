@@ -21,13 +21,19 @@ ActiveAdmin.register Customer do
     column :phone
     column :city
     column :country
+    column :favorite_colors do |customer|
+      customer.favorite_colors.join(", ")
+    end
     tag_column :gender
     actions
   end
   filter :gender
   filter :name, filters: [ :contains ]
   filter :favorite_colors
+  filter :by_favorite_colors, label: "Select Multiple Favorite Colors", 
+          as: :check_boxes, collection: Customer::VALID_COLORS, multiple: true
 
   permit_params :name, :email, :phone, :gender, 
-                :address, :city, :country, :zip_code
+                :address, :city, :country, :zip_code,
+                :age, :favorite_colors
 end

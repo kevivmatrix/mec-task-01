@@ -4,8 +4,8 @@ class Customer < ApplicationRecord
 	VALID_GENDERS = %w{ male female }
 
 	VALID_COLORS = %w{ 
-		black blue gold green grey indigo ivory green 
-		orange pink purple red silver blue white yellow 
+		black blue gold green grey indigo ivory 
+		orange pink purple red silver white yellow 
 	}
 	
 	enumerize :gender, in: VALID_GENDERS
@@ -19,4 +19,11 @@ class Customer < ApplicationRecord
   def code
     "Customer ##{id}"
   end
+
+  ransacker :by_favorite_colors, formatter: ->(search) {
+  	data = where("'#{search}' = ANY(favorite_colors)").ids
+  	data.present? ? data : nil
+	} do |parent|
+	  parent.table[:id]
+	end
 end
