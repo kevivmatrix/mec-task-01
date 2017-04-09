@@ -27,13 +27,16 @@ ActiveAdmin.register Customer do
     tag_column :gender
     actions
   end
+
   filter :gender
   filter :name, filters: [ :contains ]
-  filter :favorite_colors
-  filter :by_favorite_colors, label: "Select Multiple Favorite Colors", 
+  # filter :favorite_colors, as: :select, collection: Customer::VALID_COLORS # Doesn't work
+  # Works if multiple: true is set else returns empty array
+  filter :single_favorite_color, as: :select, collection: Customer::VALID_COLORS, multiple: true
+  filter :multiple_favorite_colors, label: "Select Multiple Favorite Colors", 
           as: :check_boxes, collection: Customer::VALID_COLORS, multiple: true
 
   permit_params :name, :email, :phone, :gender, 
                 :address, :city, :country, :zip_code,
-                :age, :favorite_colors
+                :age, favorite_colors: []
 end
