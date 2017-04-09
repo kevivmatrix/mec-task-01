@@ -2,17 +2,18 @@ require 'test_helper'
 
 class CustomerTest < ActiveSupport::TestCase
 
-  test "Gender field should be enumerized to correct values"  do
+  test "Gender field should be enumerized to correct values" do
     desired_genders = %w(male female) 
-    assert_equal Customer::VALID_GENDERS.sort, desired_genders.sort   #should add .sort if we don't care about order
-    desired_genders.each do |gender|
-      assert FactoryGirl.build(:customer, gender: gender).valid?
-    end
-    invalid_customer = FactoryGirl.build(:customer, gender: Faker::Lorem.word)
-    assert invalid_customer.invalid?
-    assert invalid_customer.errors.keys.include?(:gender)
+    assert test_enumerized(:customer, :gender, Customer::VALID_GENDERS, desired_genders)
   end
-    
+
+  test "Favorite colors field should be enumerized to correct values" do
+    desired_colors = %w{ 
+      black blue gold green grey indigo ivory green 
+      orange pink purple red silver blue white yellow 
+    }
+    assert test_enumerized(:customer, :favorite_colors, Customer::VALID_COLORS, desired_colors)
+  end
   
   test "Age should be within 18 and 99" do
     valid_age_customer = FactoryGirl.build(:customer, age: 19)
@@ -26,4 +27,5 @@ class CustomerTest < ActiveSupport::TestCase
     assert invalid_overage_customer.invalid?
     assert_equal invalid_overage_customer.errors[:age], ["must be less than or equal to 99"]
   end
+
 end

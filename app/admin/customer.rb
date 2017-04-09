@@ -26,6 +26,10 @@ ActiveAdmin.register Customer do
   end
   filter :gender
   filter :name, filters: [ :contains ]
+  # filter :favorite_colors,
+  #    collection: -> { Customer.all }
+
+  filter :name_cont
 
   permit_params :name, :email, :phone, :gender, 
                 :address, :city, :country, :zip_code

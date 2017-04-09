@@ -62,7 +62,6 @@ gem 'enumerize'
 gem 'faker'
 gem 'minitest-rails'
 gem 'country_select'
-gem 'ransack'
 
 group :production do
   gem 'lograge'
