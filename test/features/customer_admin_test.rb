@@ -68,11 +68,11 @@ feature "CustomerAdmin" do
     end
     scenario "Favorite colors should have filter" do
       visit root_path
-      sample_color_1 = Customer::VALID_COLORS.sample.titleize
-      sample_color_2 = Customer::VALID_COLORS.sample.titleize
+      sample_color_1 = Customer::VALID_COLORS.sample
+      sample_color_2 = Customer::VALID_COLORS.sample
       filter_section = page.find("#filters_sidebar_section")
-      filter_section.must_have_selector("#q_favorite_colors_input select", text: sample_color_1)
-      filter_section.must_have_selector("#q_favorite_colors_input select", text: sample_color_2)
+      filter_section.must_have_selector("#q_single_favorite_color_input select", text: sample_color_1)
+      filter_section.must_have_selector("#q_single_favorite_color_input select", text: sample_color_2)
     end
     scenario "Other fields should not have filters" do
       visit root_path
@@ -94,8 +94,8 @@ feature "CustomerAdmin" do
       visit root_path
       filter_section = page.find("#filters_sidebar_section")
       filter_section.must_have_content "Select Multiple Favorite Colors"
-      filter_section.find(:css, "#q_by_favorite_colors_black").set(true)
-      filter_section.find(:css, "#q_by_favorite_colors_green").set(true)
+      filter_section.find(:css, "#q_multiple_favorite_colors_black").set(true)
+      filter_section.find(:css, "#q_multiple_favorite_colors_green").set(true)
       filter_section.find("input[type='submit']").click
       listing_section = page.find("#index_table_customers tbody")
       listing_section.must_have_content("black")
