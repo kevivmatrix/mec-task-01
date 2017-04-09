@@ -11,6 +11,7 @@ feature "CustomerAdmin" do
     table_header.must_have_content "Phone"
     table_header.must_have_content "City"
     table_header.must_have_content "Country"
+    table_header.must_have_content "Favorite Colors"
     table_header.wont_have_content "Id"
     table_header.wont_have_content "Address"
     table_header.wont_have_content "Zip Code"
@@ -65,6 +66,14 @@ feature "CustomerAdmin" do
       filter_section.must_have_selector("#q_gender_input select", text: "Male")
       filter_section.must_have_selector("#q_gender_input select", text: "Female")
     end
+    scenario "Favorite colors should have filter" do
+      visit root_path
+      sample_color_1 = Customer::VALID_COLORS.sample.titleize
+      sample_color_2 = Customer::VALID_COLORS.sample.titleize
+      filter_section = page.find("#filters_sidebar_section")
+      filter_section.must_have_selector("#q_favorite_colors_input select", text: sample_color_1)
+      filter_section.must_have_selector("#q_favorite_colors_input select", text: sample_color_2)
+    end
     scenario "Other fields should not have filters" do
       visit root_path
       filter_section = page.find("#filters_sidebar_section")
@@ -76,6 +85,27 @@ feature "CustomerAdmin" do
       filter_section.wont_have_css("#q_zip_code_input")
       filter_section.wont_have_css("#q_created_at_input")
       filter_section.wont_have_css("#q_updated_at_input")
+    end
+    scenario "Select multiple favorite colors" do
+      customer_1 = FactoryGirl.create(:customer, favorite_colors: [ "black", "red" ])
+      customer_2 = FactoryGirl.create(:customer, favorite_colors: [ "pink", "blue" ])
+      customer_2 = FactoryGirl.create(:customer, favorite_colors: [ "yellow", "green" ])
+      customer_3 = FactoryGirl.create(:customer, favorite_colors: [ "white", "purple" ])
+      visit root_path
+      filter_section = page.find("#filters_sidebar_section")
+      filter_section.must_have_content "Select Multiple Favorite Colors"
+      filter_section.find(:css, "#q_by_favorite_colors_black").set(true)
+      filter_section.find(:css, "#q_by_favorite_colors_green").set(true)
+      filter_section.find("input[type='submit']").click
+      listing_section = page.find("#index_table_customers tbody")
+      listing_section.must_have_content("black")
+      listing_section.must_have_content("red")
+      listing_section.must_have_content("yellow")
+      listing_section.must_have_content("green")
+      listing_section.wont_have_content("pink")
+      listing_section.wont_have_content("blue")
+      listing_section.wont_have_content("white")
+      listing_section.wont_have_content("purple")
     end
   end
 end

@@ -9,6 +9,8 @@
 		address: 	"#{Faker::Address.secondary_address}, #{Faker::Address.street_name}, #{Faker::Address.street_address}",	
 		city: 		Faker::Address.city,
 		country: 	Faker::Address.country,
-		zip_code: Faker::Address.zip_code
+		zip_code: Faker::Address.zip_code,
+		age:      Faker::Number.between(18, 99),
+		favorite_colors: [ Faker::Color.color_name, Faker::Color.color_name ].uniq
 	)
 end
