@@ -65,6 +65,14 @@ feature "CustomerAdmin" do
       filter_section.must_have_selector("#q_gender_input select", text: "Male")
       filter_section.must_have_selector("#q_gender_input select", text: "Female")
     end
+    scenario "Favorite colors should have filter" do
+      visit root_path
+      sample_color_1 = Customer::VALID_COLORS.sample.titleize
+      sample_color_2 = Customer::VALID_COLORS.sample.titleize
+      filter_section = page.find("#filters_sidebar_section")
+      filter_section.must_have_selector("#q_favorite_colors_input select", text: sample_color_1)
+      filter_section.must_have_selector("#q_favorite_colors_input select", text: sample_color_2)
+    end
     scenario "Other fields should not have filters" do
       visit root_path
       filter_section = page.find("#filters_sidebar_section")
