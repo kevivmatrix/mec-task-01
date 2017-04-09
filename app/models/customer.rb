@@ -20,8 +20,8 @@ class Customer < ApplicationRecord
     "Customer ##{id}"
   end
 
-  ransacker :by_favorite_colors, formatter: ->(search) {
-  	data = where("'#{search}' = ANY(favorite_colors)").ids
+  ransacker :by_favorite_colors, formatter: ->(color) {
+  	data = where("'#{color}' = ANY(favorite_colors)").ids
   	data.present? ? data : nil
 	} do |parent|
 	  parent.table[:id]
