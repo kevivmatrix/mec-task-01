@@ -32,7 +32,7 @@ ActiveAdmin.register Customer do
   filter :name, filters: [ :contains ]
   # filter :favorite_colors, as: :select, collection: Customer::VALID_COLORS # Doesn't work
   # Works if multiple: true is set else returns empty array
-  filter :single_favorite_color, as: :select, collection: Customer::VALID_COLORS, multiple: true
+  filter :single_favorite_color, as: :select, collection: Customer::VALID_COLORS, multiple: true, label: "Favorite Color"
   filter :multiple_favorite_colors, label: "Select Multiple Favorite Colors", 
           as: :check_boxes, collection: Customer::VALID_COLORS, multiple: true
 
