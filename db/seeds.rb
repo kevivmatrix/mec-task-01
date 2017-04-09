@@ -11,6 +11,6 @@
 		country: 	Faker::Address.country,
 		zip_code: Faker::Address.zip_code,
 		age:      Faker::Number.between(18, 99),
-		favorite_colors: [ Faker::Color.color_name, Faker::Color.color_name ].uniq
+		favorite_colors: Customer::VALID_COLORS.sample(2)
 	)
 end
