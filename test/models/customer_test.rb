@@ -12,7 +12,7 @@ class CustomerTest < ActiveSupport::TestCase
       black blue gold green grey indigo ivory 
       orange pink purple red silver white yellow 
     }
-    assert test_enumerized(:customer, :favorite_colors, Customer::VALID_COLORS, desired_colors)
+    assert test_enumerized(:customer, :favorite_colors, Customer::VALID_COLORS, desired_colors, false, true)
   end
   
   test "Age should be within 18 and 99" do
