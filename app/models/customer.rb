@@ -20,17 +20,20 @@ class Customer < ApplicationRecord
     "Customer ##{id}"
   end
 
-  ransacker :single_favorite_color, formatter: ->(color) {
-    data = where("favorite_colors @> '{#{color}}'").ids
-    data.present? ? data : nil
-  } do |parent|
-    parent.table[:id]
-  end
+  scope :has_any_of_these_colors_in, ->(*colors) {
+		colors = colors.flatten
+		where("favorite_colors && '{#{colors.join(",")}}'")
+  }
 
-  ransacker :multiple_favorite_colors, formatter: ->(color) {
-  	data = where("'#{color}' = ANY(favorite_colors)").ids
-  	data.present? ? data : nil
-	} do |parent|
-	  parent.table[:id]
-	end
+  scope :has_one_of_these_colors, ->(*colors) {
+		colors = colors.flatten
+		where("favorite_colors @> '{#{colors.join(",")}}'")
+  }
+  
+  def self.ransackable_scopes option
+		[ 
+			:has_any_of_these_colors_in, 
+			:has_one_of_these_colors 
+		]
+  end
 end
