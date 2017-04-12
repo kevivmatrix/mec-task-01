@@ -3,8 +3,9 @@ require 'test_helper'
 class CustomerTest < ActiveSupport::TestCase
 
   test "Gender field should be enumerized to correct values" do
-    desired_genders = %w(male female) 
-    assert test_enumerized(:customer, :gender, Customer::VALID_GENDERS, desired_genders)
+    desired_genders = %w(male female)
+    result = valid_enumerized(:customer, :gender, Customer::VALID_GENDERS, desired_genders)
+    assert result.valid, result.messages.first
   end
 
   test "Favorite colors field should be enumerized to correct values" do
@@ -12,7 +13,8 @@ class CustomerTest < ActiveSupport::TestCase
       black blue gold green grey indigo ivory 
       orange pink purple red silver white yellow 
     }
-    assert test_enumerized(:customer, :favorite_colors, Customer::VALID_COLORS, desired_colors, false, true)
+    result = valid_enumerized(:customer, :favorite_colors, Customer::VALID_COLORS, desired_colors, true)
+    assert result.valid, result.messages.first
   end
   
   test "Age should be within 18 and 99" do
