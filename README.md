@@ -73,26 +73,26 @@ Task 4) PG arrays
 	This is directly relevant:   it is how we are storing the Data Problem flags on Carbon Records.  
 	Next task will be on PG jsonb values, if you want to read ahead.  
 
-Task 5.   learn Rails + jsonb  (also some Ransack and more AA)  
-Mainly, read up on it.     Learn the storage and query syntax in PG directly -- along the way, try out some inserts and queries directly in SQL.   Although Rails & Arel hide most of that, as usual, the syntax and operators are unusual.  When debugging, it helps to be able to read the SQL logs, to make sure Arel is doing what you intended.     Among the other things you can google:  https://www.postgresql.org/docs/9.4/static/datatype-json.html
+Task 5) Learn Rails + jsonb  (also some Ransack and more AA)  
+	Mainly, read up on it.     Learn the storage and query syntax in PG directly -- along the way, try out some inserts and queries directly in SQL.   Although Rails & Arel hide most of that, as usual, the syntax and operators are unusual.  When debugging, it helps to be able to read the SQL logs, to make sure Arel is doing what you intended.     Among the other things you can google:  https://www.postgresql.org/docs/9.4/static/datatype-json.html
 
-I'll phrase this one as a problem, not steps:  
+	I'll phrase this one as a problem, not steps:  
 
-- Customer need contact info.   But there are a bunch of common ways:   mobile, landline, email, twitter, slack, facebook, etc.   
-- We'd like to allow a lot, but not waste a whole sparse column on each of them.    
-- We don't want an infinite list -- we don't need to store customers' Geocities handle :-) -- so limit to a chosen list of 10-15.   
-	- note in the code how to add or remove a standard contact type.    
-- Allow editing,searching, and displaying int the app.  
-   - displaying should include showing all contacts in list view.    Probably in one column, since 10-15 mostly empty columns is lame.  
-   - Searching should include
-	- a text box for searching across all values, i.e. "one of their contacts contains 'vivek'"  
-	- a way to filter having certain contact types:   "show only customers that have a facebook and an email"   
-- Note in the code how to add or remove a standard contact type.   
+	- Customer need contact info.   But there are a bunch of common ways:   mobile, landline, email, twitter, slack, facebook, etc.   
+	- We'd like to allow a lot, but not waste a whole sparse column on each of them.    
+	- We don't want an infinite list -- we don't need to store customers' Geocities handle :-) -- so limit to a chosen list of 10-15.   
+		- note in the code how to add or remove a standard contact type.    
+	- Allow editing,searching, and displaying int the app.  
+	   - displaying should include showing all contacts in list view.    Probably in one column, since 10-15 mostly empty columns is lame.  
+	   - Searching should include
+		- a text box for searching across all values, i.e. "one of their contacts contains 'vivek'"  
+		- a way to filter having certain contact types:   "show only customers that have a facebook and an email"   
+	- Note in the code how to add or remove a standard contact type.   
 
-And of course, tests to prove that!  
+	And of course, tests to prove that!  
 
-Hints:  ransackable scopes.   jsonb_accessor gem could be useful, depending on choices.   
+	Hints:  ransackable scopes.   jsonb_accessor gem could be useful, depending on choices.   
 
-Code relevance:    we store several things as jsonb, including the important raw data that comes from the partners.     I also use it for result recording and other feedback / messages.   I have placeholders for more, as I anticipate needing it for various particular carbon-calculation parameters, per product or partner.
+	Code relevance:    we store several things as jsonb, including the important raw data that comes from the partners.     I also use it for result recording and other feedback / messages.   I have placeholders for more, as I anticipate needing it for various particular carbon-calculation parameters, per product or partner.
 
 </pre>

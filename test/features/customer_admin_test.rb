@@ -7,11 +7,12 @@ feature "CustomerAdmin" do
     table_header = page.find("#index_table_customers thead")
     table_header.must_have_content "Name"
     table_header.must_have_content "Email"
-    table_header.must_have_content "Gender"
     table_header.must_have_content "Phone"
     table_header.must_have_content "City"
     table_header.must_have_content "Country"
     table_header.must_have_content "Favorite Colors"
+    table_header.must_have_content "Gender"
+    table_header.must_have_content "Contacts"
     table_header.wont_have_content "Id"
     table_header.wont_have_content "Address"
     table_header.wont_have_content "Zip Code"

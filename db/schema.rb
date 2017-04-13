@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170407155434) do
+ActiveRecord::Schema.define(version: 20170413083719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,8 @@ ActiveRecord::Schema.define(version: 20170407155434) do
     t.datetime "updated_at", null: false
     t.integer "age"
     t.text "favorite_colors", default: [], array: true
+    t.jsonb "contacts", default: "{}", null: false
+    t.index ["contacts"], name: "index_customers_on_contacts", using: :gin
   end
 
 end
