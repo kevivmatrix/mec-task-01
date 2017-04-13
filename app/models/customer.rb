@@ -11,7 +11,7 @@ class Customer < ApplicationRecord
 	# Modify contact types here
 	CONTACT_TYPES = [
 		:facebook, :twitter, :instagram, :pinterest, 
-		:linkedin, :reddit, :google_plus, :skype, :slack, :email,
+		:linkedin, :reddit, :google_plus, :skype, :slack,
 		:landline, :mobile
 	]
 
