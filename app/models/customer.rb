@@ -47,12 +47,20 @@ class Customer < ApplicationRecord
   	end
   	where("contacts::jsonb ?& array[#{contact_types.join(",")}]")
   }
+
+  scope :has_contact_which_contains, ->(contact_value){
+  	query = Customer::CONTACT_TYPES.map do |contact_type|
+  		%Q{ contacts @> '{"#{contact_type}": "#{contact_value}"}' }
+  	end
+  	where(query.join(" OR "))
+  }
   
   def self.ransackable_scopes option
 		[ 
 			:has_any_of_these_colors_in, 
 			:has_one_of_these_colors,
-			:has_all_of_these_contact_types
+			:has_all_of_these_contact_types,
+			:has_contact_which_contains
 		]
   end
 end

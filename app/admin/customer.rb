@@ -70,6 +70,7 @@ ActiveAdmin.register Customer do
           collection: Customer::VALID_COLORS, multiple: true
   filter :has_all_of_these_contact_types, collection: Customer::CONTACT_TYPES,
           as: :select, multiple: true
+  filter :has_contact_which_contains
 
   permit_params :name, :email, :phone, :gender, 
                 :address, :city, :country, :zip_code,
