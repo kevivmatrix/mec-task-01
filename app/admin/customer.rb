@@ -56,7 +56,6 @@ ActiveAdmin.register Customer do
       f.input :google_plus
       f.input :skype
       f.input :slack
-      f.input :email
       f.input :landline
       f.input :mobile
     end
