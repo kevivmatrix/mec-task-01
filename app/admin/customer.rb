@@ -47,17 +47,17 @@ ActiveAdmin.register Customer do
       f.input :age
     end
     f.inputs "Contacts" do
-      f.input :facebook
-      f.input :twitter
-      f.input :instagram
-      f.input :pinterest 
-      f.input :linkedin
-      f.input :reddit
-      f.input :google_plus
-      f.input :skype
-      f.input :slack
-      f.input :landline
-      f.input :mobile
+      f.input :facebook, input_html: { name: "customer[contacts][facebook]" }
+      f.input :twitter, input_html: { name: "customer[contacts][twitter]" }
+      f.input :instagram, input_html: { name: "customer[contacts][instagram]" }
+      f.input :pinterest , input_html: { name: "customer[contacts][pinterest]" }
+      f.input :linkedin, input_html: { name: "customer[contacts][linkedin]" }
+      f.input :reddit, input_html: { name: "customer[contacts][reddit]" }
+      f.input :google_plus, input_html: { name: "customer[contacts][google_plus]" }
+      f.input :skype, input_html: { name: "customer[contacts][skype]" }
+      f.input :slack, input_html: { name: "customer[contacts][slack]" }
+      f.input :landline, input_html: { name: "customer[contacts][landline]" }
+      f.input :mobile, input_html: { name: "customer[contacts][mobile]" }
     end
     f.actions
   end
@@ -73,8 +73,17 @@ ActiveAdmin.register Customer do
 
   permit_params :name, :email, :phone, :gender, 
                 :address, :city, :country, :zip_code,
-                :age, :facebook, :twitter, :instagram, 
-                :pinterest, :linkedin, :reddit, :google_plus, 
-                :skype, :slack, :email, :landline, :mobile,
-                favorite_colors: []
+                :age, contacts: Customer::CONTACT_TYPES, favorite_colors: []
+
+  controller do
+    def update
+      # To avoid empty strings in contact types
+      Customer::CONTACT_TYPES.each do |contact_type|
+        if params["customer"]["contacts"][contact_type].empty?
+          params["customer"]["contacts"].delete contact_type
+        end
+      end
+      update!{ collection_path }
+    end
+  end
 end
