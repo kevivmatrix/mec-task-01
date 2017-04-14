@@ -50,7 +50,7 @@ class Customer < ApplicationRecord
 
   scope :has_contact_which_contains, ->(contact_value){
   	query = Customer::CONTACT_TYPES.map do |contact_type|
-  		%Q{ contacts @> '{"#{contact_type}": "#{contact_value}"}' }
+  		%Q{ contacts ->> '#{contact_type}' ilike '%#{contact_value}%' }
   	end
   	where(query.join(" OR "))
   }
