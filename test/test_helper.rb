@@ -4,6 +4,13 @@ require "minitest/rails/capybara"
 
 Dir[Rails.root.join("test/support/**/*")].each { |f| require f }
 
+# Capybara.register_driver :selenium do |app| 
+#   profile = Selenium::WebDriver::Firefox::Profile.new 
+#   Capybara::Selenium::Driver.new( app, :browser => :firefox, :profile => profile ) 
+# end
+
+# Capybara.default_driver = :selenium
+
 class ActiveSupport::TestCase
 	include FactoryGirl::Syntax::Methods
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.

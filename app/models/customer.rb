@@ -42,7 +42,7 @@ class Customer < ApplicationRecord
   }
 
   scope :has_all_of_these_contact_types, ->(*contact_types){
-  	contact_types = contact_types.flatten.map do |contact_type|
+  	contact_types = contact_types.flatten.reject(&:blank?).map do |contact_type|
   		"'#{contact_type}'"
   	end
   	where("contacts::jsonb ?& array[#{contact_types.join(",")}]")

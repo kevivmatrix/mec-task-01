@@ -87,7 +87,7 @@ feature "CustomerAdmin" do
         sample_color_1 = Customer::VALID_COLORS.sample
         sample_color_2 = Customer::VALID_COLORS.sample
         filter_section = page.find("#filters_sidebar_section")
-        filter_section.find("#q_has_one_of_these_colors_input select option[value='black']").select_option
+        filter_section.find("#q_has_one_of_these_colors option[value='black']").select_option
         filter_section.find("input[type='submit']").click
         listing_section = page.find("#index_table_customers tbody")
         listing_section.must_have_content("black")
@@ -114,6 +114,31 @@ feature "CustomerAdmin" do
         listing_section.wont_have_content("blue")
         listing_section.wont_have_content("white")
         listing_section.wont_have_content("purple")
+      end
+      scenario "Has all of these contact types" do
+        customer_1 = FactoryGirl.create(:customer, name: "Customer 1", contacts: { facebook: "facebook1", skype: "skype1" })
+        customer_2 = FactoryGirl.create(:customer, name: "Customer 2", contacts: { facebook: "facebook2", twitter: "twitter1" })
+        customer_2 = FactoryGirl.create(:customer, name: "Customer 3", contacts: { facebook: "facebook3", skype: "skype2", twitter: "twitter2" })
+        visit root_path
+        filter_section = page.find("#filters_sidebar_section")
+        filter_section.find("#q_has_all_of_these_contact_types option[value='facebook']").select_option
+        filter_section.find("#q_has_all_of_these_contact_types option[value='skype']").select_option
+        filter_section.find("input[type='submit']").click
+        listing_section = page.find("#index_table_customers tbody")
+        listing_section.must_have_content("Customer 1")
+        listing_section.wont_have_content("Customer 2")
+        listing_section.must_have_content("Customer 3")
+      end
+      scenario "Has contact which contains" do
+        customer_1 = FactoryGirl.create(:customer, name: "Customer 1", contacts: { facebook: "facebook1", skype: "skype1" })
+        customer_2 = FactoryGirl.create(:customer, name: "Customer 2", contacts: { facebook: "facebook2", twitter: "twitter1" })
+        visit root_path
+        filter_section = page.find("#filters_sidebar_section")
+        filter_section.find("#q_has_contact_which_contains").set("twitter1")
+        filter_section.find("input[type='submit']").click
+        listing_section = page.find("#index_table_customers tbody")
+        listing_section.wont_have_content("Customer 1")
+        listing_section.must_have_content("Customer 2")
       end
     end
   end
