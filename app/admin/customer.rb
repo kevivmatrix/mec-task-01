@@ -76,14 +76,27 @@ ActiveAdmin.register Customer do
                 :age, contacts: Customer::CONTACT_TYPES, favorite_colors: []
 
   controller do
+
+    def create
+      prevent_empty_contact_types!
+      create!{ collection_path }
+    end
+
     def update
+      prevent_empty_contact_types!
+      update!{ collection_path }
+    end
+
+    private
+
+    def prevent_empty_contact_types!
       # To avoid empty strings in contact types
       Customer::CONTACT_TYPES.each do |contact_type|
         if params["customer"]["contacts"][contact_type].empty?
           params["customer"]["contacts"].delete contact_type
         end
       end
-      update!{ collection_path }
     end
+
   end
 end

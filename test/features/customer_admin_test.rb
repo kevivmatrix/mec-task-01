@@ -142,4 +142,21 @@ feature "CustomerAdmin" do
       end
     end
   end
+
+  feature "Edit" do
+    scenario "Contact types" do
+      customer_1 = FactoryGirl.create(:customer)
+      visit root_path
+      listing_section = page.find("#index_table_customers tbody")
+      listing_section.find("a", text: "Edit").click
+      listing_section.wont_have_content("facebook1")
+      listing_section.wont_have_content("skype1")
+      page.find("#customer_facebook").set "facebook1"
+      page.find("#customer_skype").set "skype1"
+      page.find("#customer_submit_action input").click
+      listing_section = page.find("#index_table_customers tbody")
+      listing_section.must_have_content("facebook1")
+      listing_section.must_have_content("skype1")
+    end
+  end
 end
