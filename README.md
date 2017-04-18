@@ -95,4 +95,32 @@ Task 5) Learn Rails + jsonb  (also some Ransack and more AA)
 
 	Code relevance:    we store several things as jsonb, including the important raw data that comes from the partners.     I also use it for result recording and other feedback / messages.   I have placeholders for more, as I anticipate needing it for various particular carbon-calculation parameters, per product or partner.
 
+	Good work on the task 5 cleanup.    My only comments would be minor style questions, so I'll skip right over them here, and make sure we keep you moving.     
+
+As you've heard on the calls, reports are coming up.   Let's get you there.     This is a sizable one, and much more like a full coding problem.   
+
+Task 6)  Async Reporting 
+
+	a)  Simple exporting.
+
+	Problem:    Our admin users want to export the whole list pretty often.    Customers, in (imaginary) production use, are so numerous that foreground AA exporting is taking too long.  It needs to go in the background.   Looking ahead, we need to get away from AA export anyhow, to do more interesting reporting.    
+
+	Use Case:   Admin users should be able to trigger a full export of all customers that runs in the background.   "Full" meaning all fields, including the contact types.     When it's done, they would like to have that export findable on the site, and be able to share a link to it, rather than handing the full file around on email.     
+
+	Suggestion:  That use case suggests a model with an attached file.   After creation, it could send its job to the queue, but otherwise can be managed by AA. 
+
+	Tech limitations:     For consistency with other code, use Carrierwave for attachements, and S3 for storage, at least on production.   (Dev storage is your choice -- I'm fine with S3 even locally, for consistency)        Heroku doesn't offer Redis yet in its Indian regional deploys, so use Delayed::Job w/ AR storage.      (Also, this is a low-volume queue, so the DB penalty of DJ is insignificant)  
+
+	This will need to get deployed to Heroku, which will be another step
+
+	On S3, use a bucket I just made called
+	 htllc-mec-vivek
+
+	I made an IAM user with access.   The access key is at the bottom of this email.    The secret I will skype you, for a modicum of security.    Remember not to post the keys to github.
+
+
+	Looking ahead on the next parts, in case it informs your design:  
+	6b)  will be making generalizing:   a couple other varieties of reports, that do some calculations for different output
+	6c)  will be adding the ability to accept ransack query params to limit the reporting.   
+
 </pre>
