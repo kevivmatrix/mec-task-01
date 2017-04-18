@@ -63,6 +63,7 @@ gem 'enumerize'
 gem 'faker'
 gem 'minitest-rails'
 gem 'country_select'
+gem 'delayed_job_active_record'
 
 group :production do
   gem 'lograge'
