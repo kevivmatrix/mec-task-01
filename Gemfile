@@ -64,6 +64,8 @@ gem 'faker'
 gem 'minitest-rails'
 gem 'country_select'
 gem 'delayed_job_active_record'
+gem 'carrierwave', '~> 1.0'
+gem 'fog-aws'
 
 group :production do
   gem 'lograge'
