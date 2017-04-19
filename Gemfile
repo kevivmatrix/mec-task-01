@@ -66,6 +66,7 @@ gem 'country_select'
 gem 'delayed_job_active_record'
 gem 'carrierwave', '~> 1.0'
 gem 'fog-aws'
+# gem 'delayed_job_web'
 
 group :production do
   gem 'lograge'

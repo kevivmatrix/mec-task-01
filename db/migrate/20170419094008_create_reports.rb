@@ -3,7 +3,8 @@ class CreateReports < ActiveRecord::Migration[5.1]
     create_table :reports do |t|
       t.string :file
       t.string :type
-      t.text :parameters, array: true, default: []
+      t.jsonb :parameters, null: false, default: '{}'
+  		t.index :parameters, using: :gin
 
       t.timestamps
     end

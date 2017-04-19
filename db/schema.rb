@@ -64,10 +64,11 @@ ActiveRecord::Schema.define(version: 20170419104300) do
   create_table "reports", force: :cascade do |t|
     t.string "file"
     t.string "type"
-    t.text "parameters", default: [], array: true
+    t.jsonb "parameters", default: "{}", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status"
+    t.index ["parameters"], name: "index_reports_on_parameters", using: :gin
   end
 
 end
