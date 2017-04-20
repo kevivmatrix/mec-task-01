@@ -112,6 +112,7 @@ GEM
     country_select (3.0.0)
       countries (~> 2.0)
       sort_alphabetical (~> 1.0)
+    daemons (1.2.4)
     delayed_job (4.1.2)
       activesupport (>= 3.0, < 5.1)
     delayed_job_active_record (4.1.1)
@@ -333,6 +334,7 @@ DEPENDENCIES
   carrierwave (~> 1.0)
   coffee-rails (~> 4.2)
   country_select
+  daemons
   delayed_job_active_record
   enumerize
   factory_girl_rails (~> 4.0)

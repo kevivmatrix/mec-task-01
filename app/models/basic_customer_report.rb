@@ -4,12 +4,37 @@ class BasicCustomerReport < Report
 
 	PARAMETERS_STORE_ACCESSOR = [ :parameters ] + PARAMETERS
 
+	CSV_COLUMNS = %w{ 
+		name email phone gender address city
+		country zip_code age favorite_colors
+		facebook twitter instagram pinterest 
+		linkedin reddit google_plus skype slack
+		landline mobile	
+	}
+
 	store_accessor *PARAMETERS_STORE_ACCESSOR
 
 	def data_for_csv
 		CSV.generate do |csv|
-		  csv << ["row", "of", "CSV", "data"]
-		  csv << ["another", "row"]
+		  csv << CSV_COLUMNS.map(&:titleize)
+		  Customer.all.each do |customer|
+		  	csv << CSV_COLUMNS.map do |column|
+		  		self.send column, customer
+		  	end
+		  end
+		end
+	end
+
+	def favorite_colors customer
+		customer.favorite_colors.join(", ")
+	end
+
+	def method_missing name, *args
+		if CSV_COLUMNS.include? name.to_s
+			customer = args[0]
+			customer.send name
+		else
+			super
 		end
 	end
 
