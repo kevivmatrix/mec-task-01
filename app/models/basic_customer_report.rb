@@ -9,7 +9,7 @@ class BasicCustomerReport < Report
 		country zip_code age favorite_colors
 		facebook twitter instagram pinterest 
 		linkedin reddit google_plus skype slack
-		landline mobile	
+		landline mobile	customer_created_at customer_updated_at
 	}
 
 	store_accessor *PARAMETERS_STORE_ACCESSOR
@@ -27,6 +27,14 @@ class BasicCustomerReport < Report
 
 	def favorite_colors customer
 		customer.favorite_colors.join(", ")
+	end
+
+	def customer_created_at
+		customer.created_at
+	end
+
+	def customer_updated_at
+		customer.updated_at
 	end
 
 	def method_missing name, *args
