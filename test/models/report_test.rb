@@ -8,4 +8,15 @@ class ReportTest < ActiveSupport::TestCase
     assert result.valid, result.messages.first
   end
 
+  test "Enumerize helper methods" do
+    report = FactoryGirl.create :report
+    assert report.pending?
+    report.processing!
+    assert report.processing?
+    report.completed!
+    assert report.complete?
+    report.pending!
+    assert report.pending?
+  end
+
 end
