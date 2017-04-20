@@ -22,7 +22,7 @@ ActiveAdmin.register BasicCustomerReport do
     redirect_to collection_path, notice: "Report Generation in progress"
   end
 
-  action_item only: :index do
+  action_item :generate_report, only: :index do
 	  link_to 'Generate Report', generate_admin_basic_customer_reports_url
 	end
 end

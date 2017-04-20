@@ -1,9 +1,11 @@
-require "test_helper"
+require 'test_helper'
 
-describe Report do
-  let(:report) { Report.new }
+class ReportTest < ActiveSupport::TestCase
 
-  it "must be valid" do
-    value(report).must_be :valid?
+  test "Status field should be enumerized to correct values" do
+    desired_statuses = %w(pending processing complete)
+    result = valid_enumerized(:report, :status, Report::VALID_STATUSES, desired_statuses)
+    assert result.valid, result.messages.first
   end
+
 end
