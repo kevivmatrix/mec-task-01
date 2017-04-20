@@ -29,11 +29,11 @@ class BasicCustomerReport < Report
 		customer.favorite_colors.join(", ")
 	end
 
-	def customer_created_at
+	def customer_created_at customer
 		customer.created_at
 	end
 
-	def customer_updated_at
+	def customer_updated_at customer
 		customer.updated_at
 	end
 
