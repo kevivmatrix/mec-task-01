@@ -8,10 +8,9 @@ class BasicCustomerReport < Report
 
 	def data_for_csv
 		CSV.generate do |csv|
-  csv << ["row", "of", "CSV", "data"]
-  csv << ["another", "row"]
-  # ...
-end
+		  csv << ["row", "of", "CSV", "data"]
+		  csv << ["another", "row"]
+		end
 	end
 
 end
