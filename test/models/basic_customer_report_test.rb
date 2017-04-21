@@ -29,4 +29,31 @@ class BasicCustomerReportTest < ActiveSupport::TestCase
 		assert_equal basic_customer_report.customer_updated_at(customer), customer.updated_at
 	end
 
+	test "Data for csv" do
+		customer_1 = FactoryGirl.create :customer, favorite_colors: ["red", "orange"], contacts: { facebook: "facebook1" }
+		customer_2 = FactoryGirl.create :customer, favorite_colors: ["yellow", "green"], contacts: { skype: "skype1" }
+		basic_customer_report = FactoryGirl.create :basic_customer_report
+		
+		csv_data = basic_customer_report.data_for_csv
+		csv_data_lines = csv_data.split("\n")
+		csv_columns = BasicCustomerReport::CSV_COLUMNS
+		titleized_csv_columns = csv_columns.map(&:titleize).join(",")
+
+		customer_1_data = CSV.generate do |csv|
+	  	csv << BasicCustomerReport::CSV_COLUMNS.map do |column|
+	  		basic_customer_report.send column, customer_1
+	  	end
+		end
+
+		customer_2_data = CSV.generate do |csv|
+	  	csv << BasicCustomerReport::CSV_COLUMNS.map do |column|
+	  		basic_customer_report.send column, customer_2
+	  	end
+		end
+		
+		assert_equal csv_data_lines[0], titleized_csv_columns
+		assert_equal csv_data_lines[1], customer_1_data.strip
+		assert_equal csv_data_lines[2], customer_2_data.strip
+	end
+
 end
