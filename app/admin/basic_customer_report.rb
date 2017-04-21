@@ -5,7 +5,7 @@ ActiveAdmin.register BasicCustomerReport do
 
 	index do
 		column :file do |basic_customer_report|
-			if basic_customer_report.complete?
+			if basic_customer_report.completed?
 				link_to "Report ##{basic_customer_report.id}", basic_customer_report.file.url
 			else
 				"Generating..."
