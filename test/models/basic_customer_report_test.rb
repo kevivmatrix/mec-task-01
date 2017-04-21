@@ -16,4 +16,17 @@ class BasicCustomerReportTest < ActiveSupport::TestCase
 		assert_equal generated_file_name, "report_#{basic_customer_report.id.to_s}.csv"
 	end
 
+	test "Favorite Colors" do
+		customer = FactoryGirl.create :customer, favorite_colors: [ "red", "yellow" ]
+		basic_customer_report = FactoryGirl.create :basic_customer_report
+		assert_equal basic_customer_report.favorite_colors(customer), "red, yellow"
+	end
+
+	test "Time fields - created_at and updated_at" do
+		customer = FactoryGirl.create :customer
+		basic_customer_report = FactoryGirl.create :basic_customer_report
+		assert_equal basic_customer_report.customer_created_at(customer), customer.created_at
+		assert_equal basic_customer_report.customer_updated_at(customer), customer.updated_at
+	end
+
 end
