@@ -33,6 +33,6 @@ class Report < ApplicationRecord
 	private
 
 		def temp_report_file_path format
-			Rails.root.join("tmp", "reports_#{self.id}.#{format}")
+			Rails.root.join("tmp", "report_#{self.id}.#{format}")
 		end
 end
