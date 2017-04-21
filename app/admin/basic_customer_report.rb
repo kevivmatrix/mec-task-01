@@ -18,7 +18,7 @@ ActiveAdmin.register BasicCustomerReport do
 	filter :created_at
 
 	collection_action :generate, method: :get do
-  	BasicCustomerReport.create.delay.generate
+		BasicCustomerReportJob.perform_later
     redirect_to collection_path, notice: "Report Generation in progress"
   end
 
