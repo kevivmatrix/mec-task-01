@@ -11,14 +11,22 @@ class ReportTest < ActiveSupport::TestCase
   test "Enumerize helper methods" do
     report = FactoryGirl.create :report
     assert report.pending?
-    report.processing!
+    
+    report.processing! "Processing"
     assert report.processing?
-    report.completed!
+    assert_equal report.status_description, "Processing"
+    
+    report.completed! "Completed"
     assert report.completed?
-    report.failed!
+    assert_equal report.status_description, "Completed"
+    
+    report.failed! "Failed"
     assert report.failed?
-    report.pending!
+    assert_equal report.status_description, "Failed"
+    
+    report.pending! "Pending"
     assert report.pending?
+    assert_equal report.status_description, "Pending"
   end
 
 end

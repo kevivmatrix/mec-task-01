@@ -16,20 +16,20 @@ class Report < ApplicationRecord
 		end
 	end
 
-	def pending!
-		update status: "pending"
+	def pending! description="Pending"
+		update status: "pending", status_description: description
 	end
 
-	def processing!
-		update status: "processing"
+	def processing! description="Processing"
+		update status: "processing", status_description: description
 	end
 
-	def completed!
-		update status: "completed"
+	def completed! description="Completed"
+		update status: "completed", status_description: description
 	end
 
-	def failed!
-		update status: "failed"
+	def failed! description="Failed"
+		update status: "failed", status_description: description
 	end
 
 	private
