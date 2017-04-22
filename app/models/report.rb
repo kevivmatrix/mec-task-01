@@ -3,9 +3,9 @@ class Report < ApplicationRecord
 
 	mount_uploader :file, FileUploader
 	
-	VALID_STATUSES = %w{ pending processing completed failed }
+	VALID_STATUSES = %w{ waiting processing completed failed }
 
-	enumerize :status, in: VALID_STATUSES, default: "pending", predicates: true
+	enumerize :status, in: VALID_STATUSES, default: "waiting", predicates: true
 
 	def generate format="csv"
 		data = send("data_for_#{format}")
@@ -16,8 +16,8 @@ class Report < ApplicationRecord
 		end
 	end
 
-	def pending! description="Pending"
-		update status: "pending", status_description: description
+	def waiting! description="Waiting"
+		update status: "waiting", status_description: description
 	end
 
 	def processing! description="Processing"
