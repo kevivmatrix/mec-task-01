@@ -14,19 +14,19 @@ class ReportTest < ActiveSupport::TestCase
     
     report.processing! "Processing"
     assert report.processing?
-    assert_equal report.status_description, "Processing"
+    assert_equal "Processing", report.status_description
     
     report.completed! "Completed"
     assert report.completed?
-    assert_equal report.status_description, "Completed"
+    assert_equal "Completed", report.status_description
     
     report.failed! "Failed"
     assert report.failed?
-    assert_equal report.status_description, "Failed"
+    assert_equal "Failed", report.status_description
     
     report.waiting! "Waiting"
     assert report.waiting?
-    assert_equal report.status_description, "Waiting"
+    assert_equal "Waiting", report.status_description
   end
 
 end

@@ -11,20 +11,20 @@ class BasicCustomerReportTest < ActiveSupport::TestCase
 		# Check generated file
 		assert basic_customer_report.file.present?
 		generated_file_name = File.basename basic_customer_report.file.url
-		assert_equal generated_file_name, "report_#{basic_customer_report.id.to_s}.csv"
+		assert_equal "report_#{basic_customer_report.id.to_s}.csv", generated_file_name
 	end
 
 	test "Favorite Colors" do
 		customer = FactoryGirl.create :customer, favorite_colors: [ "red", "yellow" ]
 		basic_customer_report = FactoryGirl.create :basic_customer_report
-		assert_equal basic_customer_report.favorite_colors(customer), "red, yellow"
+		assert_equal "red, yellow", basic_customer_report.favorite_colors(customer)
 	end
 
 	test "Time fields - created_at and updated_at" do
 		customer = FactoryGirl.create :customer
 		basic_customer_report = FactoryGirl.create :basic_customer_report
-		assert_equal basic_customer_report.customer_created_at(customer), customer.created_at
-		assert_equal basic_customer_report.customer_updated_at(customer), customer.updated_at
+		assert_equal customer.created_at, basic_customer_report.customer_created_at(customer)
+		assert_equal customer.updated_at, basic_customer_report.customer_updated_at(customer)
 	end
 
 	test "Data for csv" do
@@ -49,9 +49,9 @@ class BasicCustomerReportTest < ActiveSupport::TestCase
 	  	end
 		end
 		
-		assert_equal csv_data_lines[0], titleized_csv_columns
-		assert_equal csv_data_lines[1], customer_1_data.strip
-		assert_equal csv_data_lines[2], customer_2_data.strip
+		assert_equal titleized_csv_columns, csv_data_lines[0]
+		assert_equal customer_1_data.strip, csv_data_lines[1]
+		assert_equal customer_2_data.strip, csv_data_lines[2]
 	end
 
 end

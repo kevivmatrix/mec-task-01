@@ -23,11 +23,11 @@ class CustomerTest < ActiveSupport::TestCase
 
     invalid_underage_customer = FactoryGirl.build(:customer, age: 17)
     assert invalid_underage_customer.invalid?
-    assert_equal invalid_underage_customer.errors[:age], ["must be greater than or equal to 18"]
+    assert_equal ["must be greater than or equal to 18"], invalid_underage_customer.errors[:age]
 
     invalid_overage_customer = FactoryGirl.build(:customer, age: 100)
     assert invalid_overage_customer.invalid?
-    assert_equal invalid_overage_customer.errors[:age], ["must be less than or equal to 99"]
+    assert_equal ["must be less than or equal to 99"], invalid_overage_customer.errors[:age]
   end
 
 end
