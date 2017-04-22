@@ -17,5 +17,6 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  Rails.application.config.active_job.queue_adapter = :test
 end
 
