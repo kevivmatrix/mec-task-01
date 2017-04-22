@@ -58,6 +58,8 @@ feature "BasicCustomerReportAdminTest" do
       first_customer_data = csv_data[1]
       last_customer_data = csv_data[-1]
 
+      byebug
+
       assert_equal 23, header_column.count
       assert_equal header_column, BasicCustomerReport::CSV_COLUMNS.map(&:titleize)
       assert_equal 4, csv_data.count

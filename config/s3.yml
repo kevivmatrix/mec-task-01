@@ -1,0 +1,8 @@
+production:
+  bucket_name: <%= ENV["MEC_AWS_BUCKET"] %>
+  access_key_id: <%= ENV["MEC_AWS_ACCESS_ID"] %>
+  secret_access_key: <%= ENV["MEC_AWS_ACCESS_SECRET"] %>
+test:
+  bucket_name: testbucket
+  access_key_id: secretkeyid
+  secret_access_key: secretaccesskey
