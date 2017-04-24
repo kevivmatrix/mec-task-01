@@ -11,6 +11,15 @@ Dir[Rails.root.join("test/support/**/*")].each { |f| require f }
 
 # Capybara.default_driver = :selenium
 
+Fog.mock!
+Fog::Mock.reset
+connection = Fog::Storage.new({
+  :provider                 => 'AWS',
+  :aws_access_key_id        => 'secretkeyid',
+  :aws_secret_access_key    => 'secretaccesskey'
+})
+connection.directories.create(:key => 'htllc-mec-vivek')
+
 class ActiveSupport::TestCase
 	include FactoryGirl::Syntax::Methods
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
@@ -18,12 +27,4 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
   Rails.application.config.active_job.queue_adapter = :test
-
-  Fog.mock!
-  connection = Fog::Storage.new({
-    :provider                 => 'AWS',
-    :aws_access_key_id        => 'secretkeyid',
-    :aws_secret_access_key    => 'secretaccesskey'
-  })
-  connection.directories.create(:key => 'htllc-mec-vivek')
 end

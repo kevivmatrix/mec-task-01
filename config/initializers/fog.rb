@@ -1,4 +1,6 @@
 # if Rails.env.production?
+  require 'carrierwave/orm/activerecord'
+
   CarrierWave.configure do |config|
     s3_config = YAML::load(File.read(Rails.root.join('config','s3.yml')))[Rails.env]
     
