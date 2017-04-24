@@ -1,5 +1,5 @@
 development:
-  bucket_name: testbucket
+  bucket_name: htllc-mec-vivek
   access_key_id: secretkeyid
   secret_access_key: secretaccesskey
 production:
@@ -7,6 +7,6 @@ production:
   access_key_id: <%= ENV["MEC_AWS_ACCESS_ID"] %>
   secret_access_key: <%= ENV["MEC_AWS_ACCESS_SECRET"] %>
 test:
-  bucket_name: testbucket
+  bucket_name: htllc-mec-vivek
   access_key_id: secretkeyid
   secret_access_key: secretaccesskey
