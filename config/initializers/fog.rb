@@ -1,7 +1,7 @@
 require 'carrierwave/orm/activerecord'
 
 CarrierWave.configure do |config|
-  s3_config = YAML::load(File.read(Rails.root.join('config','s3.yml')))[Rails.env]  
+  s3_config = YAML.load(ERB.new(File.read("#{Rails.root}/config/s3.yml")).result)[Rails.env]
   
   config.fog_provider = 'fog/aws'
   config.fog_credentials = {
