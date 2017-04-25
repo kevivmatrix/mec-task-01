@@ -6,9 +6,9 @@ class FileUploader < CarrierWave::Uploader::Base
 
   # Choose what kind of storage to use for this uploader:
   case Rails.env
-  when "production", "test"
+  when "production" #, "test"
     storage :fog
-  when "development"
+  when "development", "test"
     storage :file
   end
 
