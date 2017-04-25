@@ -331,7 +331,7 @@ DEPENDENCIES
   activeadmin_addons
   byebug
   capybara (~> 2.13.0)
-  carrierwave (~> 1.0)
+  carrierwave (>= 1.0.0.beta, < 2.0)
   coffee-rails (~> 4.2)
   country_select
   daemons

@@ -64,7 +64,7 @@ gem 'faker'
 gem 'minitest-rails'
 gem 'country_select'
 gem 'delayed_job_active_record'
-gem 'carrierwave', '~> 1.0'
+gem 'carrierwave', '>= 1.0.0.beta', '< 2.0'
 gem 'fog-aws'
 gem 'daemons'
 
