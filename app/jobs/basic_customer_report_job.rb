@@ -5,8 +5,8 @@ class BasicCustomerReportJob < ApplicationJob
     @basic_customer_report.failed! error.message
   end
 
-  def perform(*args)
-  	@basic_customer_report = BasicCustomerReport.create
+  def perform parameters
+  	@basic_customer_report = BasicCustomerReport.create(parameters: parameters)
   	@basic_customer_report.processing!
 		@basic_customer_report.generate
   	@basic_customer_report.completed!
