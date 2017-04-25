@@ -123,4 +123,29 @@ Task 6)  Async Reporting
 	6b)  will be making generalizing:   a couple other varieties of reports, that do some calculations for different output
 	6c)  will be adding the ability to accept ransack query params to limit the reporting.   
 
+Task 7)  Filtered reporting
+	As touched on earlier.
+
+	Use case:     The users wish to report on filtered search results.      (For BasicCustomer, this isn't very different from the built-in export, but is more useful for other types)
+
+	Add a way to do trigger a new report generation, from the Customer index page, that limits the reporting to the filter results.    Passing the ransack filters is OK -- we do not need to pass exact id list or such.   
+
+
+Task 8)  More reports
+
+	Add two reports:  
+	a)  Color analysis:   
+	  For each color,
+	   -  # of customers with that favorite
+	   -  # of customers who have only that color as favorite. 
+	   -  average # of colors per customer
+	   - average # of customers per color
+
+	b)  contact + age analysis
+	    For each contact type,
+		- count of customers with that contact type
+		- min, max and average age of those customers
+
+	Those should be runnable from the reports page.   When task 7 is done, they should also accept filtering restriction.   
+
 </pre>
