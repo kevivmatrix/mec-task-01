@@ -1,6 +1,8 @@
 require "test_helper"
 
 feature "CustomerAdmin" do
+  include ActiveJob::TestHelper
+
   scenario "Index should list only required fields" do
     customer = FactoryGirl.create(:customer)
     visit root_path
@@ -157,6 +159,86 @@ feature "CustomerAdmin" do
       listing_section = page.find("#index_table_customers tbody")
       listing_section.must_have_content("facebook1")
       listing_section.must_have_content("skype1")
+    end
+  end
+
+  scenario "Generate Report" do
+    customers = setup_customers
+    customer_1 = customers[0]
+    customer_2 = customers[1]
+    customer_3 = customers[2]
+
+    visit root_path
+    filter_section = page.find("#filters_sidebar_section")
+    filter_section.find(:css, "#q_has_any_of_these_colors_black").set(true)
+    filter_section.find(:css, "#q_has_any_of_these_colors_green").set(true)
+    filter_section.find("input[type='submit']").click
+
+    assert_performed_with(job: BasicCustomerReportJob) do
+      page.find(:link, "Generate Report").click
+      page.must_have_content "Report Generation in progress"
+
+      basic_customer_report = BasicCustomerReport.last
+      page.must_have_content "Report ##{basic_customer_report.id}"
+      page.must_have_content "Completed"
+
+      page.find(:link, "Report ##{basic_customer_report.id}").click
+      page.response_headers['Content-Type'].must_equal "text/csv"
+
+      csv_data = CSV.parse page.body
+      header_column = csv_data[0]
+      first_customer_data = csv_data[1]
+      second_customer_data = csv_data[2]
+
+      assert_equal 3, csv_data.count
+
+      assert_equal "Customer 3", first_customer_data[0]
+      assert_equal "customer_3@gmail.com", first_customer_data[1]
+      assert_equal "7890", first_customer_data[2]
+      assert_equal "female", first_customer_data[3]
+      assert_equal "Customer 3 Address", first_customer_data[4]
+      assert_equal "Washington", first_customer_data[5]
+      assert_equal "USA", first_customer_data[6]
+      assert_equal "11103", first_customer_data[7]
+      assert_equal "43", first_customer_data[8]
+      assert_equal "blue, green", first_customer_data[9]
+      assert_equal "facebook3", first_customer_data[10]
+      assert_equal "twitter3", first_customer_data[11]
+      assert_equal "instagram3", first_customer_data[12]
+      assert_equal "pinterest3", first_customer_data[13]
+      assert_equal "linkedin3", first_customer_data[14]
+      assert_equal "reddit3", first_customer_data[15]
+      assert_equal "google_plus3", first_customer_data[16]
+      assert_equal "skype3", first_customer_data[17]
+      assert_equal "slack3", first_customer_data[18]
+      assert_equal "landline3", first_customer_data[19]
+      assert_equal "mobile3", first_customer_data[20]
+      assert_equal customer_3.created_at.to_s, first_customer_data[21]
+      assert_equal customer_3.updated_at.to_s, first_customer_data[22]
+
+      assert_equal "Customer 2", second_customer_data[0]
+      assert_equal "customer_2@gmail.com", second_customer_data[1]
+      assert_equal "4567", second_customer_data[2]
+      assert_equal "male", second_customer_data[3]
+      assert_equal "Customer 2 Address", second_customer_data[4]
+      assert_equal "California", second_customer_data[5]
+      assert_equal "USA", second_customer_data[6]
+      assert_equal "11102", second_customer_data[7]
+      assert_equal "32", second_customer_data[8]
+      assert_equal "black, green", second_customer_data[9]
+      assert_equal "facebook2", second_customer_data[10]
+      assert_equal "twitter2", second_customer_data[11]
+      assert_equal "instagram2", second_customer_data[12]
+      assert_equal "pinterest2", second_customer_data[13]
+      assert_equal "linkedin2", second_customer_data[14]
+      assert_equal "reddit2", second_customer_data[15]
+      assert_equal "google_plus2", second_customer_data[16]
+      assert_equal "skype2", second_customer_data[17]
+      assert_equal "slack2", second_customer_data[18]
+      assert_equal "landline2", second_customer_data[19]
+      assert_equal "mobile2", second_customer_data[20]
+      assert_equal customer_2.created_at.to_s, second_customer_data[21]
+      assert_equal customer_2.updated_at.to_s, second_customer_data[22]
     end
   end
 end

@@ -71,6 +71,16 @@ ActiveAdmin.register Customer do
           as: :select, multiple: true
   filter :has_contact_which_contains
 
+  action_item :generate_report, only: :index do
+    link_to(
+      'Generate Report', 
+      generate_admin_basic_customer_reports_url(
+        q: params[:q].try(:to_unsafe_h),
+        order: params[:order]
+      )
+    )
+  end
+
   permit_params :name, :email, :phone, :gender, 
                 :address, :city, :country, :zip_code,
                 :age, contacts: Customer::CONTACT_TYPES, favorite_colors: []

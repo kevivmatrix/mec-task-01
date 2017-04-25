@@ -17,7 +17,11 @@ class BasicCustomerReport < Report
 	def data_for_csv
 		CSV.generate do |csv|
 		  csv << CSV_COLUMNS.map(&:titleize)
-		  Customer.all.each do |customer|
+		  customers = Customer.ransack(parameters["q"])
+		  if parameters["order"].present?
+		  	customers.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
+		  end
+		  customers.result.each do |customer|
 		  	csv << CSV_COLUMNS.map do |column|
 		  		self.send column, customer
 		  	end

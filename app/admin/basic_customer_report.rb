@@ -18,7 +18,10 @@ ActiveAdmin.register BasicCustomerReport do
 	filter :created_at
 
 	collection_action :generate, method: :get do
-		BasicCustomerReportJob.perform_later
+		BasicCustomerReportJob.perform_later(
+			q: params[:q].try(:to_unsafe_h),
+      order: params[:order]
+		)
     redirect_to collection_path, notice: "Report Generation in progress"
   end
 
