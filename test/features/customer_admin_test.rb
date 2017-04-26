@@ -175,7 +175,7 @@ feature "CustomerAdmin" do
     filter_section.find("input[type='submit']").click
 
     assert_performed_with(job: BasicCustomerReportJob) do
-      page.find(:link, "Generate Report").click
+      page.find(:link, "Generate Basic Report").click
       page.must_have_content "Report Generation in progress"
 
       basic_customer_report = BasicCustomerReport.last

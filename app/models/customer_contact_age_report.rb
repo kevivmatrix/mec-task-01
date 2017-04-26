@@ -1,4 +1,4 @@
-class ColorAnalysisReport < Report
+class CustomerContactAgeReport < Report
 
 	PARAMETERS = []
 

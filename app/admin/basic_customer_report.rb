@@ -22,7 +22,7 @@ ActiveAdmin.register BasicCustomerReport do
 			q: params[:q].try(:to_unsafe_h),
       order: params[:order]
 		)
-    redirect_to collection_path, notice: "Report Generation in progress"
+    redirect_to collection_path, notice: "Basic Customer Report Generation in progress"
   end
 
   action_item :generate_report, only: :index do

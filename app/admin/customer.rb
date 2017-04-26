@@ -71,14 +71,22 @@ ActiveAdmin.register Customer do
           as: :select, multiple: true
   filter :has_contact_which_contains
 
-  action_item :generate_report, only: :index do
+  action_item :generate_basic_report, only: :index do
     link_to(
-      'Generate Report', 
+      'Generate Basic Report', 
       generate_admin_basic_customer_reports_url(
         q: params[:q].try(:to_unsafe_h),
         order: params[:order]
       )
     )
+  end
+
+  action_item :generate_color_report, only: :index do
+    link_to('Generate Color Report', generate_admin_customer_color_reports_url)
+  end
+
+  action_item :generate_contact_age_report, only: :index do
+    link_to('Generate Contact & Age Report', generate_admin_customer_contact_age_reports_url)
   end
 
   permit_params :name, :email, :phone, :gender, 
