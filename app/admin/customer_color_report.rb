@@ -13,6 +13,7 @@ ActiveAdmin.register CustomerColorReport do
 		end
 		column :parameters
 		tag_column :status
+		column :status_description
 	end
 
 	filter :created_at
