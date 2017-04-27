@@ -13,7 +13,7 @@ feature "BasicCustomerReportAdminTest" do
   	page.find(:link, "Basic Customer Reports").click
   	page.must_have_content "Generate Report"
 
-  	assert_performed_with(job: BasicCustomerReportJob) do
+  	assert_performed_with(job: ReportJob) do
       page.find(:link, "Generate Report").click
       page.must_have_content "Report Generation in progress"
       

@@ -19,10 +19,13 @@ ActiveAdmin.register CustomerContactAgeReport do
 	filter :created_at
 
 	collection_action :generate, method: :get do
-		CustomerContactAgeReportJob.perform_later(
-			q: params[:q].try(:to_unsafe_h),
-      order: params[:order]
+		customer_contact_age_report = CustomerContactAgeReport.create(
+			parameters: {
+				q: params[:q].try(:to_unsafe_h),
+      	order: params[:order]
+			}
 		)
+		ReportJob.perform_later(customer_contact_age_report)
     redirect_to collection_path, notice: "Customer Contact Age Report Generation in progress"
   end
 
