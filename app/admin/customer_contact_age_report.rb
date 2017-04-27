@@ -6,7 +6,7 @@ ActiveAdmin.register CustomerContactAgeReport do
 	index do
 		column :file do |customer_contact_age_report|
 			if customer_contact_age_report.completed?
-				link_to "Report ##{customer_contact_age_report.id}", customer_contact_age_report.file.url
+				link_to "Customer Color Report ##{customer_contact_age_report.id}", customer_contact_age_report.file.url
 			else
 				"Generating..."
 			end
@@ -18,7 +18,10 @@ ActiveAdmin.register CustomerContactAgeReport do
 	filter :created_at
 
 	collection_action :generate, method: :get do
-		CustomerContactAgeReportJob.perform_later
+		CustomerContactAgeReportJob.perform_later(
+			q: params[:q].try(:to_unsafe_h),
+      order: params[:order]
+		)
     redirect_to collection_path, notice: "Customer Contact Age Report Generation in progress"
   end
 

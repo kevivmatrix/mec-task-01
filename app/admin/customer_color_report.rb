@@ -18,7 +18,10 @@ ActiveAdmin.register CustomerColorReport do
 	filter :created_at
 
 	collection_action :generate, method: :get do
-		CustomerColorReportJob.perform_later
+		CustomerColorReportJob.perform_later(
+			q: params[:q].try(:to_unsafe_h),
+      order: params[:order]
+		)
     redirect_to collection_path, notice: "Customer Color Report Generation in progress"
   end
 

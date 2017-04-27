@@ -82,11 +82,23 @@ ActiveAdmin.register Customer do
   end
 
   action_item :generate_color_report, only: :index do
-    link_to('Generate Color Report', generate_admin_customer_color_reports_url)
+    link_to(
+      'Generate Color Report', 
+      generate_admin_customer_color_reports_url(
+        q: params[:q].try(:to_unsafe_h),
+        order: params[:order]
+      )
+    )
   end
 
   action_item :generate_contact_age_report, only: :index do
-    link_to('Generate Contact-Age Report', generate_admin_customer_contact_age_reports_url)
+    link_to(
+      'Generate Contact-Age Report', 
+      generate_admin_customer_contact_age_reports_url(
+        q: params[:q].try(:to_unsafe_h),
+        order: params[:order]
+      )
+    )
   end
 
   permit_params :name, :email, :phone, :gender, 

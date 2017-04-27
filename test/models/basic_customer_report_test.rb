@@ -11,7 +11,7 @@ class BasicCustomerReportTest < ActiveSupport::TestCase
 		# Check generated file
 		assert basic_customer_report.file.present?
 		generated_file_name = File.basename basic_customer_report.file.url
-		assert_equal "report_#{basic_customer_report.id.to_s}.csv", generated_file_name
+		assert_equal "basic_customer_report_#{basic_customer_report.id.to_s}.csv", generated_file_name
 	end
 
 	test "Favorite Colors" do

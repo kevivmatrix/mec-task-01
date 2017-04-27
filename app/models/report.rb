@@ -32,9 +32,4 @@ class Report < ApplicationRecord
 		update status: "failed", status_description: description
 	end
 
-	private
-
-		def temp_report_file_path format
-			Rails.root.join("tmp", "report_#{self.id}.#{format}")
-		end
 end
