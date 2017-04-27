@@ -25,6 +25,7 @@ ActiveAdmin.register Customer do
       customer.favorite_colors.join(", ")
     end
     tag_column :gender
+    column :age
     column :contacts do |customer|
       Customer::CONTACT_TYPES.map do |contact_type|
         contact_type_value = customer.send(contact_type)

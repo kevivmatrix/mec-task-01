@@ -31,27 +31,27 @@ class CustomerColorReport < Report
 		end
 	end
 
-  def color_name color
-    color
-  end
-
-  def color_customers_count color
-    customers.where("favorite_colors && '{#{color}}'").count
-  end
-
-  def unique_color_customers_count color
-    customers.where("favorite_colors = '{#{color}}'").count
-  end
-
-  def average_number_of_colors_per_customer
-    total_colors_set_by_customers / customers_count.to_f
-  end
-
-  def average_number_of_customers_per_color
-    customers_with_colors_count / colors.count.to_f
-  end
-
   private
+
+    def color_name color
+      color
+    end
+
+    def color_customers_count color
+      customers.where("favorite_colors && '{#{color}}'").count
+    end
+
+    def unique_color_customers_count color
+      customers.where("favorite_colors = '{#{color}}'").count
+    end
+
+    def average_number_of_colors_per_customer
+      total_colors_set_by_customers / customers_count.to_f
+    end
+
+    def average_number_of_customers_per_color
+      customers_with_colors_count / colors.count.to_f
+    end
 
     def set_customers
       @customers = Customer.ransack(parameters["q"])
