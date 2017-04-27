@@ -45,6 +45,7 @@ ActiveAdmin.register Customer do
       f.input :country
       f.input :zip_code
       f.input :age
+      f.input :favorite_colors, as: :select
     end
     f.inputs "Contacts" do
       f.input :facebook, input_html: { name: "customer[contacts][facebook]" }

@@ -34,7 +34,7 @@ class CustomerColorReport < Report
   end
 
   def unique_customers_count color
-    
+    Customer.where("favorite_colors = '{#{color}}'").count
   end
 
   private
