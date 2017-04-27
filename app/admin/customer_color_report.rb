@@ -6,7 +6,7 @@ ActiveAdmin.register CustomerColorReport do
 	index do
 		column :file do |customer_color_report|
 			if customer_color_report.completed?
-				link_to "Report ##{customer_color_report.id}", customer_color_report.file.url
+				link_to "Customer Color Report ##{customer_color_report.id}", customer_color_report.file.url
 			else
 				"Generating..."
 			end

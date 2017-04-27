@@ -6,7 +6,7 @@ ActiveAdmin.register CustomerContactAgeReport do
 	index do
 		column :file do |customer_contact_age_report|
 			if customer_contact_age_report.completed?
-				link_to "Customer Color Report ##{customer_contact_age_report.id}", customer_contact_age_report.file.url
+				link_to "Customer Contact-Age Report ##{customer_contact_age_report.id}", customer_contact_age_report.file.url
 			else
 				"Generating..."
 			end
