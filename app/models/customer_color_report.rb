@@ -46,11 +46,11 @@ class CustomerColorReport < Report
     end
 
     def average_number_of_colors_per_customer
-      total_colors_set_by_customers / customers_count.to_f
+      (total_colors_set_by_customers / customers_count.to_f).round(3)
     end
 
     def average_number_of_customers_per_color
-      customers_with_colors_count / colors.count.to_f
+      (customers_with_colors_count / colors.count.to_f).round(3)
     end
 
     def set_customers
