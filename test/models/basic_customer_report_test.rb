@@ -14,19 +14,6 @@ class BasicCustomerReportTest < ActiveSupport::TestCase
 		assert_equal "basic_customer_report_#{basic_customer_report.id.to_s}.csv", generated_file_name
 	end
 
-	test "Favorite Colors" do
-		customer = FactoryGirl.create :customer, favorite_colors: [ "red", "yellow" ]
-		basic_customer_report = FactoryGirl.create :basic_customer_report
-		assert_equal "red, yellow", basic_customer_report.favorite_colors(customer)
-	end
-
-	test "Time fields - created_at and updated_at" do
-		customer = FactoryGirl.create :customer
-		basic_customer_report = FactoryGirl.create :basic_customer_report
-		assert_equal customer.created_at, basic_customer_report.customer_created_at(customer)
-		assert_equal customer.updated_at, basic_customer_report.customer_updated_at(customer)
-	end
-
 	test "Data for csv" do
 		customer_1 = FactoryGirl.create :customer, favorite_colors: ["red", "orange"], contacts: { facebook: "facebook1" }
 		customer_2 = FactoryGirl.create :customer, favorite_colors: ["yellow", "green"], contacts: { skype: "skype1" }
