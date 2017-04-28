@@ -9,4 +9,16 @@ FactoryGirl.define do
     parameters '{}'
     file nil
   end
+
+  factory :customer_color_report do
+    type "CustomerColorReport"
+    parameters '{}'
+    file nil
+  end
+
+  factory :customer_contact_age_report do
+    type "CustomerContactAgeReport"
+    parameters '{}'
+    file nil
+  end
 end
