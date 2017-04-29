@@ -24,7 +24,19 @@ feature "CustomerColorReportAdminTest" do
       page.find(:link, "Customer Color Report ##{customer_color_report.id}").click
       page.response_headers['Content-Type'].must_equal "text/csv"
 
-      csv_data = CSV.parse page.body
+      csv_data = page.body.split("\n")
+      header_column = csv_data[0]
+      first_color_column = csv_data[1]
+      fourth_color_column = csv_data[4]
+      average_column_1 = csv_data[-2]
+      average_column_2 = csv_data[-1]
+
+      assert_equal "Color,# Customers favorited,# Customers only favorited", header_column
+      assert_equal "black,1,0", first_color_column
+      assert_equal "green,2,0", fourth_color_column
+
+      assert_equal "Average # of Colors per Customer,2.0", average_column_1
+      assert_equal "Average # of Customers per Color,0.214", average_column_2
     end
   end
 end

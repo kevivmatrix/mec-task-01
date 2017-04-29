@@ -18,10 +18,10 @@ feature "CustomerContactAgeReportAdminTest" do
       page.must_have_content "Customer Contact Age Report Generation in progress"
 
       customer_color_report = CustomerContactAgeReport.last
-      page.must_have_content "Customer Contact Age Report ##{customer_color_report.id}"
+      page.must_have_content "Customer Contact-Age Report ##{customer_color_report.id}"
       page.must_have_content "Completed"
       
-      page.find(:link, "Customer Contact Age Report ##{customer_color_report.id}").click
+      page.find(:link, "Customer Contact-Age Report ##{customer_color_report.id}").click
       page.response_headers['Content-Type'].must_equal "text/csv"
 
       csv_data = CSV.parse page.body
