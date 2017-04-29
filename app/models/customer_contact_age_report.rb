@@ -53,7 +53,7 @@ class CustomerContactAgeReport < Report
     end
 
     def average_age_with_contact_type contact_type
-      contact_type_customers(contact_type).average(:age)
+      contact_type_customers(contact_type).average(:age).try(:round, 2)
     end
 
     def contact_type_customers contact_type
