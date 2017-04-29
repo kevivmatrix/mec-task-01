@@ -6,23 +6,27 @@ ActiveAdmin.register BasicCustomerReport do
 	index do
 		column :file do |basic_customer_report|
 			if basic_customer_report.completed?
-				link_to "Report ##{basic_customer_report.id}", basic_customer_report.file.url
+				link_to "Basic Customer Report ##{basic_customer_report.id}", basic_customer_report.file.url
 			else
 				"Generating..."
 			end
 		end
 		column :parameters
 		tag_column :status
+		column :status_description
 	end
 
 	filter :created_at
 
 	collection_action :generate, method: :get do
-		BasicCustomerReportJob.perform_later(
-			q: params[:q].try(:to_unsafe_h),
-      order: params[:order]
+		basic_customer_report = BasicCustomerReport.create(
+			parameters: {
+				q: params[:q].try(:to_unsafe_h),
+      	order: params[:order]
+			}
 		)
-    redirect_to collection_path, notice: "Report Generation in progress"
+		ReportJob.perform_later(basic_customer_report)
+    redirect_to collection_path, notice: "Basic Customer Report Generation in progress"
   end
 
   action_item :generate_report, only: :index do

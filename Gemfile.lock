@@ -18,6 +18,15 @@ GIT
       sprockets (< 4.1)
 
 GIT
+  remote: https://github.com/carrierwaveuploader/carrierwave.git
+  revision: 35f50359d2456d7a8a31948529e16557653fc359
+  specs:
+    carrierwave (1.0.0)
+      activemodel (>= 4.0.0)
+      activesupport (>= 4.0.0)
+      mime-types (>= 1.16)
+
+GIT
   remote: https://github.com/rails/sass-rails.git
   revision: dfbcc6a53653d8908007e26324a0f299f026ec4f
   specs:
@@ -89,10 +98,6 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    carrierwave (1.0.0)
-      activemodel (>= 4.0.0)
-      activesupport (>= 4.0.0)
-      mime-types (>= 1.16)
     childprocess (0.6.3)
       ffi (~> 1.0, >= 1.0.11)
     coderay (1.1.1)
@@ -331,7 +336,7 @@ DEPENDENCIES
   activeadmin_addons
   byebug
   capybara (~> 2.13.0)
-  carrierwave (>= 1.0.0.beta, < 2.0)
+  carrierwave!
   coffee-rails (~> 4.2)
   country_select
   daemons

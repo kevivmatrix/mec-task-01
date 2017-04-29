@@ -25,6 +25,7 @@ ActiveAdmin.register Customer do
       customer.favorite_colors.join(", ")
     end
     tag_column :gender
+    column :age
     column :contacts do |customer|
       Customer::CONTACT_TYPES.map do |contact_type|
         contact_type_value = customer.send(contact_type)
@@ -45,6 +46,7 @@ ActiveAdmin.register Customer do
       f.input :country
       f.input :zip_code
       f.input :age
+      f.input :favorite_colors, as: :select
     end
     f.inputs "Contacts" do
       f.input :facebook, input_html: { name: "customer[contacts][facebook]" }
@@ -71,10 +73,30 @@ ActiveAdmin.register Customer do
           as: :select, multiple: true
   filter :has_contact_which_contains
 
-  action_item :generate_report, only: :index do
+  action_item :generate_basic_report, only: :index do
     link_to(
-      'Generate Report', 
+      'Generate Basic Report', 
       generate_admin_basic_customer_reports_url(
+        q: params[:q].try(:to_unsafe_h),
+        order: params[:order]
+      )
+    )
+  end
+
+  action_item :generate_color_report, only: :index do
+    link_to(
+      'Generate Color Report', 
+      generate_admin_customer_color_reports_url(
+        q: params[:q].try(:to_unsafe_h),
+        order: params[:order]
+      )
+    )
+  end
+
+  action_item :generate_contact_age_report, only: :index do
+    link_to(
+      'Generate Contact-Age Report', 
+      generate_admin_customer_contact_age_reports_url(
         q: params[:q].try(:to_unsafe_h),
         order: params[:order]
       )

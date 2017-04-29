@@ -174,8 +174,8 @@ feature "CustomerAdmin" do
     filter_section.find(:css, "#q_has_any_of_these_colors_green").set(true)
     filter_section.find("input[type='submit']").click
 
-    assert_performed_with(job: BasicCustomerReportJob) do
-      page.find(:link, "Generate Report").click
+    assert_performed_with(job: ReportJob) do
+      page.find(:link, "Generate Basic Report").click
       page.must_have_content "Report Generation in progress"
 
       basic_customer_report = BasicCustomerReport.last

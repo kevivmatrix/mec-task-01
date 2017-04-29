@@ -23,25 +23,29 @@ class BasicCustomerReport < Report
 		  end
 		  customers.result.each do |customer|
 		  	csv << CSV_COLUMNS.map do |column|
-		  		self.send column, customer
+		  		send column, customer
 		  	end
 		  end
 		end
 	end
-
-	def favorite_colors customer
-		customer.favorite_colors.join(", ")
-	end
-
-	def customer_created_at customer
-		customer.created_at
-	end
-
-	def customer_updated_at customer
-		customer.updated_at
-	end
-
+	
 	private
+
+		def favorite_colors customer
+			customer.favorite_colors.join(", ")
+		end
+
+		def customer_created_at customer
+			customer.created_at
+		end
+
+		def customer_updated_at customer
+			customer.updated_at
+		end
+
+		def temp_report_file_path format
+      Rails.root.join("tmp", "basic_customer_report_#{self.id}.#{format}")
+    end
 
 		def method_missing name, *args
 			if CSV_COLUMNS.include? name.to_s
