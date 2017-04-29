@@ -24,7 +24,14 @@ feature "CustomerContactAgeReportAdminTest" do
       page.find(:link, "Customer Contact-Age Report ##{customer_color_report.id}").click
       page.response_headers['Content-Type'].must_equal "text/csv"
 
-      csv_data = CSV.parse page.body
+      csv_data = page.body.split("\n")
+      header_column = csv_data[0]
+      first_contact_column = csv_data[1]
+      last_contact_column = csv_data[-1]
+
+      assert_equal "Contact Type,# Customers,Min. Age,Max. Age,Avg. Age", header_column
+      assert_equal "facebook,3,21,43,32.0", first_contact_column
+      assert_equal "mobile,3,21,43,32.0", last_contact_column
     end
   end
 end
