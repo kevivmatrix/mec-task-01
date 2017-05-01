@@ -1,7 +1,7 @@
 ActiveAdmin.register CustomerContactAgeReport do
 	menu parent: "Report"
 
-	actions :index, :generate
+	# actions :index, :generate
 
 	index do
 		column :file do |customer_contact_age_report|
