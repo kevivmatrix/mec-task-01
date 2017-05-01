@@ -179,10 +179,10 @@ feature "CustomerAdmin" do
       page.must_have_content "Basic Customer Report Generation in progress"
 
       basic_customer_report = BasicCustomerReport.last
-      page.must_have_content "Report ##{basic_customer_report.id}"
+      page.must_have_content "Basic Customer Report ##{basic_customer_report.id}"
       page.must_have_content "Completed"
 
-      page.find(:link, "Report ##{basic_customer_report.id}").click
+      page.find(:link, "Basic Customer Report ##{basic_customer_report.id}").click
       page.response_headers['Content-Type'].must_equal "text/csv"
 
       csv_data = CSV.parse page.body
@@ -275,6 +275,40 @@ feature "CustomerAdmin" do
       assert_equal "black,1,0", first_color_data
       assert_equal "Average # of Colors per Customer,2.0", first_average_color_data
       assert_equal "Average # of Customers per Color,0.143", second_average_color_data
+    end
+  end
+
+  scenario "Generate Contact-Age Report" do
+    customers = setup_customers
+    customer_1 = customers[0]
+    customer_2 = customers[1]
+    customer_3 = customers[2]
+
+    visit root_path
+    filter_section = page.find("#filters_sidebar_section")
+    filter_section.find(:css, "#q_has_any_of_these_colors_black").set(true)
+    filter_section.find(:css, "#q_has_any_of_these_colors_green").set(true)
+    filter_section.find("input[type='submit']").click
+
+    assert_performed_with(job: ReportJob) do
+      page.find(:link, "Generate Contact-Age Report").click
+      page.must_have_content "Customer Contact Age Report Generation in progress"
+
+      customer_contact_age_report = CustomerContactAgeReport.last
+      page.must_have_content "Customer Contact-Age Report ##{customer_contact_age_report.id}"
+      page.must_have_content "Completed"
+
+      page.find(:link, "Customer Contact-Age Report ##{customer_contact_age_report.id}").click
+      page.response_headers['Content-Type'].must_equal "text/csv"
+
+      csv_data_lines = page.body.split("\n")
+      header_column = csv_data_lines[0]
+      first_contact_age_data = csv_data_lines[1]
+      last_contact_age_data = csv_data_lines[-1]
+
+      assert_equal "Contact Type,# Customers,Min. Age,Max. Age,Avg. Age", header_column
+      assert_equal "facebook,2,32,43,37.5", first_contact_age_data
+      assert_equal "mobile,2,32,43,37.5", last_contact_age_data
     end
   end
 end
