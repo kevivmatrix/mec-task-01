@@ -181,6 +181,7 @@ feature "CustomerAdmin" do
       basic_customer_report = BasicCustomerReport.last
       page.must_have_content "Basic Customer Report ##{basic_customer_report.id}"
       page.must_have_content "Completed"
+      page.must_have_content "Has any of these colors in - black, green"
 
       page.find(:link, "Basic Customer Report ##{basic_customer_report.id}").click
       page.response_headers['Content-Type'].must_equal "text/csv"
@@ -261,6 +262,7 @@ feature "CustomerAdmin" do
       customer_color_report = CustomerColorReport.last
       page.must_have_content "Report ##{customer_color_report.id}"
       page.must_have_content "Completed"
+      page.must_have_content "Has any of these colors in - black, green"
 
       page.find(:link, "Report ##{customer_color_report.id}").click
       page.response_headers['Content-Type'].must_equal "text/csv"
@@ -297,6 +299,7 @@ feature "CustomerAdmin" do
       customer_contact_age_report = CustomerContactAgeReport.last
       page.must_have_content "Customer Contact-Age Report ##{customer_contact_age_report.id}"
       page.must_have_content "Completed"
+      page.must_have_content "Has any of these colors in - black, green"
 
       page.find(:link, "Customer Contact-Age Report ##{customer_contact_age_report.id}").click
       page.response_headers['Content-Type'].must_equal "text/csv"

@@ -11,7 +11,10 @@ ActiveAdmin.register CustomerContactAgeReport do
 				"Generating..."
 			end
 		end
-		column :parameters
+		column :parameters do |basic_customer_report|
+			basic_customer_report.translate_ransack_parameters.
+				gsub("\n", "<br/>").html_safe
+		end
 		tag_column :status
 		column :status_description
 	end

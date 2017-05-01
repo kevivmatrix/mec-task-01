@@ -32,4 +32,17 @@ class Report < ApplicationRecord
 		update status: "failed", status_description: description
 	end
 
+	def translate_ransack_parameters
+		translation = []
+		if parameters["q"].present?
+			parameters["q"].each do |key, value|
+				value = value.is_a?(Array) ? value.join(", ") : value
+				if value.present?
+					translation << "#{key.humanize} - #{value}"
+				end
+			end
+		end
+		translation.join("\n")
+	end
+
 end
