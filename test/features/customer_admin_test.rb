@@ -162,7 +162,7 @@ feature "CustomerAdmin" do
     end
   end
 
-  scenario "Generate Report" do
+  scenario "Generate Basic Report" do
     customers = setup_customers
     customer_1 = customers[0]
     customer_2 = customers[1]
@@ -176,7 +176,7 @@ feature "CustomerAdmin" do
 
     assert_performed_with(job: ReportJob) do
       page.find(:link, "Generate Basic Report").click
-      page.must_have_content "Report Generation in progress"
+      page.must_have_content "Basic Customer Report Generation in progress"
 
       basic_customer_report = BasicCustomerReport.last
       page.must_have_content "Report ##{basic_customer_report.id}"
@@ -239,6 +239,42 @@ feature "CustomerAdmin" do
       assert_equal "mobile2", second_customer_data[20]
       assert_equal customer_2.created_at.to_s, second_customer_data[21]
       assert_equal customer_2.updated_at.to_s, second_customer_data[22]
+    end
+  end
+
+  scenario "Generate Color Report" do
+    customers = setup_customers
+    customer_1 = customers[0]
+    customer_2 = customers[1]
+    customer_3 = customers[2]
+
+    visit root_path
+    filter_section = page.find("#filters_sidebar_section")
+    filter_section.find(:css, "#q_has_any_of_these_colors_black").set(true)
+    filter_section.find(:css, "#q_has_any_of_these_colors_green").set(true)
+    filter_section.find("input[type='submit']").click
+
+    assert_performed_with(job: ReportJob) do
+      page.find(:link, "Generate Color Report").click
+      page.must_have_content "Customer Color Report Generation in progress"
+
+      customer_color_report = CustomerColorReport.last
+      page.must_have_content "Report ##{customer_color_report.id}"
+      page.must_have_content "Completed"
+
+      page.find(:link, "Report ##{customer_color_report.id}").click
+      page.response_headers['Content-Type'].must_equal "text/csv"
+
+      csv_data_lines = page.body.split("\n")
+      header_column = csv_data_lines[0]
+      first_color_data = csv_data_lines[1]
+      first_average_color_data = csv_data_lines[-2]
+      second_average_color_data = csv_data_lines[-1]
+
+      assert_equal "Color,# Customers favorited,# Customers only favorited", header_column
+      assert_equal "black,1,0", first_color_data
+      assert_equal "Average # of Colors per Customer,2.0", first_average_color_data
+      assert_equal "Average # of Customers per Color,0.143", second_average_color_data
     end
   end
 end
