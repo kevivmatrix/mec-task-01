@@ -148,4 +148,35 @@ Task 8)  More reports
 
 	Those should be runnable from the reports page.   When task 7 is done, they should also accept filtering restriction.   
 
+Task 9)    User-friendly report handling.  
+
+	Part 1:
+	Context:  
+	- Users will be running these reports regularly, and the details of the run will be hard to remember with generic labels and filenames.   (The details are not just the parameters, but when it was run, it's intended purpose, etc).      
+
+
+	Use Case:    
+	- Users should be able to choose a short label for each report run.     The label should also be incorporated into the resulting filename.      The label should be case-insensitive unique.      
+	- Users should be able to choose the report type, rather than have a button or separate page for every type.   (Eventually, there might be a dozen types)
+	- Users should be able to see all recently run reports in a list.   
+	    Example:      User chooses "Create Report",  then "Color Report", then a label of "Colors 4 Apr before upload".    The resulting index page entry should show that label, and the file should be named something like "Colors 4 Apr before upload.csv".   Or, as a code I prefer less spaces, so perhaps "Colors-4-Apr-before-upload.csv" or even "colors-4-apr-before-upload.csv"    
+
+	That way, users can look on the site, and in their download directory, and see more descriptive names for the reports.  The filenames will also be more helpful to other staff looking in a shared dropbox directory.   
+
+	Part 2:  
+
+	Context:   Some reports are suitable for running on a filtered subset of data, but some won't be.   
+	   In this simple example setup it's not as clear, but you can see that the Color report is less useful, even a little misleading, if the data set is filtered for colors --  many color rows will be zeros.   
+
+	Use Case:   
+	- The Part 1 functionality should also extend to reports run from the Customers page, with filter parameters.    
+	- Only certain report types should be available for that functionality.    For this example, let's prevent the Color report from being chosen from the filtered Customers page.  
+
+	Although I'm open to other solution, this seems to imply an embedded form:   Pulldown for the (filter-friendly) report type, and a box for the label.  
+
+
+	Bonus Part 3:  
+
+	It would be nice to have a more  readable interpretation of those ransack parameters.    AA prints one in the right column, under the filters.      See if you could leverage that, or copy the code out, to add a "filter description" to the report object.   Or perhaps there is a different gem or gist out there for translating ransack speak into english?   
+
 </pre>
