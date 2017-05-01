@@ -14,6 +14,7 @@ ActiveAdmin.register Report do
 		end
 		tag_column :status
 		column :status_description
+		actions
 	end
 
 	form do |f|

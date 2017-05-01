@@ -9,6 +9,10 @@ class Report < ApplicationRecord
 
 	validates_uniqueness_of :label, case_sensitive: false
 
+	after_create do
+		ReportJob.perform_later(self)
+	end
+
 	def generate format="csv"
 		data = send("data_for_#{format}")
 		File.open(temp_report_file_path(format), 'w') do |temp_file|
@@ -53,7 +57,7 @@ class Report < ApplicationRecord
 	private
 
 		def temp_report_file_path format
-      Rails.root.join("tmp", temp_report_file_name)
+      Rails.root.join("tmp", temp_report_file_name(format))
     end
 
     def temp_report_file_name format
