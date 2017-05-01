@@ -68,8 +68,4 @@ class CustomerContactAgeReport < Report
       @customers = @customers.result
     end
 
-    def temp_report_file_path format
-      Rails.root.join("tmp", "customer_contact_age_report_#{self.id}.#{format}")
-    end
-
 end

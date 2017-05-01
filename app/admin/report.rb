@@ -1,7 +1,4 @@
 ActiveAdmin.register Report do
-	menu parent: "Report"
-
-	# actions :index, :generate
 
 	index do
 		column :file do |customer_contact_age_report|
@@ -22,6 +19,7 @@ ActiveAdmin.register Report do
 	form do |f|
 		f.inputs do
 			f.input :label
+			f.input :type, as: :select, collection: %w{ BasicCustomerReport CustomerColorReport CustomerContactAgeReport }
 			f.input :parameters, as: :text
 		end
 		f.actions
@@ -29,18 +27,24 @@ ActiveAdmin.register Report do
 
 	filter :created_at
 
-	# collection_action :generate, method: :get do
-	# 	customer_contact_age_report = CustomerContactAgeReport.create(
-	# 		parameters: {
-	# 			q: params[:q].try(:to_unsafe_h),
- #      	order: params[:order]
-	# 		}
-	# 	)
-	# 	ReportJob.perform_later(customer_contact_age_report)
- #    redirect_to collection_path, notice: "Customer Contact Age Report Generation in progress"
- #  end
+	permit_params :label, :type, parameters: {}
 
- 	# action_item :generate_report, only: :index do
-	#   link_to 'Generate Report', generate_admin_customer_contact_age_reports_url
-	# end
+	controller do
+
+		def new
+			super do
+	      resource.type = params[:type] if params[:type]
+	      if params[:parameters]
+					resource.parameters = params[:parameters].try(:to_unsafe_h).to_json
+				end
+	    end
+    end
+
+    def create
+    	params[:report][:parameters] = JSON.parse params[:report][:parameters]
+      create!{ collection_path }
+    end
+
+	end
+
 end

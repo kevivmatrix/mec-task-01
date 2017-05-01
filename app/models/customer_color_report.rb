@@ -77,8 +77,4 @@ class CustomerColorReport < Report
       customers.sum("array_length(favorite_colors, 1)")
     end
 
-    def temp_report_file_path format
-      Rails.root.join("tmp", "customer_color_report_#{self.id}.#{format}")
-    end
-
 end

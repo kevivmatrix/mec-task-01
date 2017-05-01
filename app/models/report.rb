@@ -44,7 +44,27 @@ class Report < ApplicationRecord
 				end
 			end
 		end
+		if parameters["order"].present?
+			translation << "Order - #{parameters["order"].humanize}"
+		end
 		translation.join("\n")
 	end
+
+	private
+
+		def temp_report_file_path format
+      Rails.root.join("tmp", temp_report_file_name)
+    end
+
+    def temp_report_file_name format
+    	file_name = if label.present?
+    		label.downcase.gsub(" ", "_")
+    	elsif type.present?
+    		"#{type.underscore}_#{id}"
+    	else
+    		"report_#{id}"
+    	end
+    	"#{file_name}.#{format}"
+    end
 
 end
