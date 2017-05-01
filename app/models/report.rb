@@ -7,6 +7,8 @@ class Report < ApplicationRecord
 
 	enumerize :status, in: VALID_STATUSES, default: "waiting", predicates: true
 
+	validates_uniqueness_of :label, case_sensitive: false
+
 	def generate format="csv"
 		data = send("data_for_#{format}")
 		File.open(temp_report_file_path(format), 'w') do |temp_file|

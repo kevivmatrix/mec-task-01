@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170422061120) do
+ActiveRecord::Schema.define(version: 20170501103726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20170422061120) do
     t.datetime "updated_at", null: false
     t.string "status"
     t.text "status_description"
+    t.string "label"
     t.index ["parameters"], name: "index_reports_on_parameters", using: :gin
   end
 
