@@ -1,5 +1,8 @@
 ActiveAdmin.register Report do
 
+	ALL_REPORTS = %w{ BasicCustomerReport CustomerColorReport CustomerContactAgeReport }
+	CUSTOMER_FILTERABLE_REPORTS = %w{ BasicCustomerReport CustomerContactAgeReport }
+
 	index do
 		column :file do |report|
 			if report.completed?
@@ -20,7 +23,11 @@ ActiveAdmin.register Report do
 	form do |f|
 		f.inputs do
 			f.input :label
-			f.input :type, as: :select, collection: %w{ BasicCustomerReport CustomerColorReport CustomerContactAgeReport }
+			if params[:parameters].present?
+				f.input :type, as: :select, collection: CUSTOMER_FILTERABLE_REPORTS
+			else
+				f.input :type, as: :select, collection: ALL_REPORTS
+			end
 			f.input :parameters, as: :text
 		end
 		f.actions

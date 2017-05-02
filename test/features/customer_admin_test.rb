@@ -259,33 +259,10 @@ feature "CustomerAdmin" do
     filter_section.find(:css, "#q_has_any_of_these_colors_green").set(true)
     filter_section.find("input[type='submit']").click
 
-    assert_performed_with(job: ReportJob) do
-      page.find(:link, "Generate Report").click
-      page.find(:css, "#report_label").set("Label1")
-      page.find(:css, "#report_type").set("CustomerColorReport")
-      page.find("#report_type option[value='CustomerColorReport']").select_option
-      page.find("input[type='submit']").click
-      page.must_have_content "Customer color report was successfully created."
-
-      customer_color_report = CustomerColorReport.last
-      page.must_have_content "label1.csv"
-      page.must_have_content "Completed"
-      page.must_have_content "Has any of these colors in - black, green"
-
-      page.find(:link, "label1.csv").click
-      page.response_headers['Content-Type'].must_equal "text/csv"
-
-      csv_data_lines = page.body.split("\n")
-      header_column = csv_data_lines[0]
-      first_color_data = csv_data_lines[1]
-      first_average_color_data = csv_data_lines[-2]
-      second_average_color_data = csv_data_lines[-1]
-
-      assert_equal "Color,# Customers favorited,# Customers only favorited", header_column
-      assert_equal "black,1,0", first_color_data
-      assert_equal "Average # of Colors per Customer,2.0", first_average_color_data
-      assert_equal "Average # of Customers per Color,0.143", second_average_color_data
-    end
+    page.find(:link, "Generate Report").click
+    page.find(:css, "#report_label").set("Label1")
+    page.find(:css, "#report_type").set("CustomerColorReport")
+    page.wont_have_css("#report_type option[value='CustomerColorReport']")
   end
 
   scenario "Generate Contact-Age Report" do
