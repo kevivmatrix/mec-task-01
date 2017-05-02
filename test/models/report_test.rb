@@ -4,12 +4,12 @@ class ReportTest < ActiveSupport::TestCase
 
   test "Status field should be enumerized to correct values" do
     desired_statuses = %w(waiting processing completed failed)
-    result = valid_enumerized(:report, :status, Report::VALID_STATUSES, desired_statuses)
+    result = valid_enumerized(:basic_customer_report, :status, Report::VALID_STATUSES, desired_statuses)
     assert result.valid, result.messages.first
   end
 
   test "Enumerize helper methods" do
-    report = FactoryGirl.create :report
+    report = FactoryGirl.create :report, type: "BasicCustomerReport"
     assert report.waiting?
     
     report.processing! "Processing"

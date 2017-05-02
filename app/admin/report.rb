@@ -1,15 +1,15 @@
 ActiveAdmin.register Report do
 
 	index do
-		column :file do |customer_contact_age_report|
-			if customer_contact_age_report.completed?
-				link_to "Customer Contact-Age Report ##{customer_contact_age_report.id}", customer_contact_age_report.file.url
+		column :file do |report|
+			if report.completed?
+				link_to report.file_name, report.file.url
 			else
 				"Generating..."
 			end
 		end
-		column :parameters do |basic_customer_report|
-			basic_customer_report.translate_ransack_parameters.
+		column :parameters do |report|
+			report.translate_ransack_parameters.
 				gsub("\n", "<br/>").html_safe
 		end
 		tag_column :status

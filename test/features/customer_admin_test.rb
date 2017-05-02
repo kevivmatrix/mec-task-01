@@ -175,15 +175,19 @@ feature "CustomerAdmin" do
     filter_section.find("input[type='submit']").click
 
     assert_performed_with(job: ReportJob) do
-      page.find(:link, "Generate Basic Report").click
-      page.must_have_content "Basic Customer Report Generation in progress"
+      page.find(:link, "Generate Report").click
+      page.find(:css, "#report_label").set("Label1")
+      page.find(:css, "#report_type").set("BasicCustomerReport")
+      page.find("#report_type option[value='BasicCustomerReport']").select_option
+      page.find("input[type='submit']").click
+      page.must_have_content "Basic customer report was successfully created."
 
       basic_customer_report = BasicCustomerReport.last
-      page.must_have_content "Basic Customer Report ##{basic_customer_report.id}"
+      page.must_have_content "label1.csv"
       page.must_have_content "Completed"
       page.must_have_content "Has any of these colors in - black, green"
 
-      page.find(:link, "Basic Customer Report ##{basic_customer_report.id}").click
+      page.find(:link, "label1.csv").click
       page.response_headers['Content-Type'].must_equal "text/csv"
 
       csv_data = CSV.parse page.body
@@ -256,15 +260,19 @@ feature "CustomerAdmin" do
     filter_section.find("input[type='submit']").click
 
     assert_performed_with(job: ReportJob) do
-      page.find(:link, "Generate Color Report").click
-      page.must_have_content "Customer Color Report Generation in progress"
+      page.find(:link, "Generate Report").click
+      page.find(:css, "#report_label").set("Label1")
+      page.find(:css, "#report_type").set("CustomerColorReport")
+      page.find("#report_type option[value='CustomerColorReport']").select_option
+      page.find("input[type='submit']").click
+      page.must_have_content "Customer color report was successfully created."
 
       customer_color_report = CustomerColorReport.last
-      page.must_have_content "Report ##{customer_color_report.id}"
+      page.must_have_content "label1.csv"
       page.must_have_content "Completed"
       page.must_have_content "Has any of these colors in - black, green"
 
-      page.find(:link, "Report ##{customer_color_report.id}").click
+      page.find(:link, "label1.csv").click
       page.response_headers['Content-Type'].must_equal "text/csv"
 
       csv_data_lines = page.body.split("\n")
@@ -293,15 +301,19 @@ feature "CustomerAdmin" do
     filter_section.find("input[type='submit']").click
 
     assert_performed_with(job: ReportJob) do
-      page.find(:link, "Generate Contact-Age Report").click
-      page.must_have_content "Customer Contact Age Report Generation in progress"
+      page.find(:link, "Generate Report").click
+      page.find(:css, "#report_label").set("Label1")
+      page.find(:css, "#report_type").set("CustomerContactAgeReport")
+      page.find("#report_type option[value='CustomerContactAgeReport']").select_option
+      page.find("input[type='submit']").click
+      page.must_have_content "Customer contact age report was successfully created."
 
       customer_contact_age_report = CustomerContactAgeReport.last
-      page.must_have_content "Customer Contact-Age Report ##{customer_contact_age_report.id}"
+      page.must_have_content "label1.csv"
       page.must_have_content "Completed"
       page.must_have_content "Has any of these colors in - black, green"
 
-      page.find(:link, "Customer Contact-Age Report ##{customer_contact_age_report.id}").click
+      page.find(:link, "label1.csv").click
       page.response_headers['Content-Type'].must_equal "text/csv"
 
       csv_data_lines = page.body.split("\n")

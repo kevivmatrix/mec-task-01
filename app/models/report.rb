@@ -7,7 +7,8 @@ class Report < ApplicationRecord
 
 	enumerize :status, in: VALID_STATUSES, default: "waiting", predicates: true
 
-	validates_uniqueness_of :label, case_sensitive: false
+	validates_uniqueness_of :label, case_sensitive: false, allow_blank: true
+	validates_presence_of :type
 
 	after_create do
 		ReportJob.perform_later(self)
@@ -52,6 +53,10 @@ class Report < ApplicationRecord
 			translation << "Order - #{parameters["order"].humanize}"
 		end
 		translation.join("\n")
+	end
+
+	def file_name
+		File.basename file.url
 	end
 
 	private
