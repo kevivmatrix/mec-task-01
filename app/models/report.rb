@@ -56,7 +56,7 @@ class Report < ApplicationRecord
 	end
 
 	def file_name
-		File.basename file.url
+		File.basename file.url.split("?")[0]
 	end
 
 	private
