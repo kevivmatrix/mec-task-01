@@ -7,7 +7,12 @@ class Report < ApplicationRecord
 
 	enumerize :status, in: VALID_STATUSES, default: "waiting", predicates: true
 
-	validates_uniqueness_of :label, case_sensitive: false
+	validates_uniqueness_of :label, case_sensitive: false, allow_blank: true
+	validates_presence_of :type
+
+	after_create do
+		ReportJob.perform_later(self)
+	end
 
 	def generate format="csv"
 		data = send("data_for_#{format}")
@@ -44,7 +49,31 @@ class Report < ApplicationRecord
 				end
 			end
 		end
+		if parameters["order"].present?
+			translation << "Order - #{parameters["order"].humanize}"
+		end
 		translation.join("\n")
 	end
+
+	def file_name
+		File.basename file.url
+	end
+
+	private
+
+		def temp_report_file_path format
+      Rails.root.join("tmp", temp_report_file_name(format))
+    end
+
+    def temp_report_file_name format
+    	file_name = if label.present?
+    		label.downcase.gsub(" ", "_")
+    	elsif type.present?
+    		"#{type.underscore}_#{id}"
+    	else
+    		"report_#{id}"
+    	end
+    	"#{file_name}.#{format}"
+    end
 
 end

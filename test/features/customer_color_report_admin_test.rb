@@ -10,18 +10,20 @@ feature "CustomerColorReportAdminTest" do
     customer_3 = customers[2]
 
     visit root_path
-    page.find(:link, "Customer Color Reports").click
-    page.must_have_content "Generate Report"
+    page.find(:link, "Reports").click
+    page.find(:link, "New Report").click
+    page.find(:css, "#report_label").set("Label1")
+    page.find("#report_type option[value='CustomerColorReport']").select_option
 
     assert_performed_with(job: ReportJob) do
-      page.find(:link, "Generate Report").click
-      page.must_have_content "Customer Color Report Generation in progress"
+      page.find("input[type='submit']").click
+      page.must_have_content "Customer color report was successfully created."
 
       customer_color_report = CustomerColorReport.last
-      page.must_have_content "Customer Color Report ##{customer_color_report.id}"
+      page.must_have_content "label1.csv"
       page.must_have_content "Completed"
       
-      page.find(:link, "Customer Color Report ##{customer_color_report.id}").click
+      page.find(:link, "label1.csv").click
       page.response_headers['Content-Type'].must_equal "text/csv"
 
       csv_data = page.body.split("\n")

@@ -10,18 +10,21 @@ feature "BasicCustomerReportAdminTest" do
     customer_3 = customers[2]
 
   	visit root_path
-  	page.find(:link, "Basic Customer Reports").click
-  	page.must_have_content "Generate Report"
+  	page.find(:link, "Reports").click
+  	page.find(:link, "New Report").click
+    page.find(:css, "#report_label").set("Label1")
+    page.find(:css, "#report_type").set("BasicCustomerReport")
+    page.find("#report_type option[value='BasicCustomerReport']").select_option
 
-  	assert_performed_with(job: ReportJob) do
-      page.find(:link, "Generate Report").click
-      page.must_have_content "Basic Customer Report Generation in progress"
+    assert_performed_with(job: ReportJob) do
+      page.find("input[type='submit']").click
+      page.must_have_content "Basic customer report was successfully created."
       
       basic_customer_report = BasicCustomerReport.last
-      page.must_have_content "Basic Customer Report ##{basic_customer_report.id}"
+      page.must_have_content "label1.csv"
       page.must_have_content "Completed"
       
-      page.find(:link, "Basic Customer Report ##{basic_customer_report.id}").click
+      page.find(:link, "label1.csv").click
       page.response_headers['Content-Type'].must_equal "text/csv"
 
       csv_data = CSV.parse page.body
