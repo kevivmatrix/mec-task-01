@@ -43,6 +43,10 @@ class BasicCustomerReport < Report
 			customer.updated_at
 		end
 
+		def city customer
+			customer.city.name
+		end
+
 		def method_missing name, *args
 			if CSV_COLUMNS.include? name.to_s
 				customer = args[0]
