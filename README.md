@@ -177,6 +177,43 @@ Task 9)    User-friendly report handling.
 
 	Bonus Part 3:  
 
-	It would be nice to have a more  readable interpretation of those ransack parameters.    AA prints one in the right column, under the filters.      See if you could leverage that, or copy the code out, to add a "filter description" to the report object.   Or perhaps there is a different gem or gist out there for translating ransack speak into english?   
+	It would be nice to have a more  readable interpretation of those ransack parameters.    AA prints one in the right column, under the filters.      See if you could leverage that, or copy the code out, to add a "filter description" to the report object.   Or perhaps there is a different gem or gist out there for translating ransack speak into english?
+
+Task 9)  performance check
+
+	First, add some DB load:   
+	- Add a Customer Type model (make up a few options), so that Customer belongs to Customer Type.   
+	- Create a City Model, similar deal, but making a master list of 100 Faker cities.    Replace the City field with a belongs_to there. 
+	Both of those need filters and tests, of course.  
+	    
+	Seed your customers out to 100K entries.   
+	Find out how much time and memory it takes to run each report with it.     
+	If any of them go above 1Gb of mem,  or takes more than 5min to run,   see if you can bring that down.   
+	  Bonus:  if it is low memory but slow, find out if it is DB or CPU taking the most time.     (All on your local is fine for now)
+
+	If it all looks glorious at 100K, try 200K  :-)     
+	Just seeding will start to take some time there:   consider keeping a spare copy of seeded DBs around to reload.  (pg createdb -T)
+
+	One intuitive guess:   Basic will blow up memory at 1-200K.    It's doing customer.ransack.result, meaning it's slurping all of them in at once.  
+
+	Test note:   here's a direct payoff.   If you are changing your fetch structure, your report-accuracy  and -UI tests should stay green.    So we are both confident it is working the same as before.  
+
+	[Segue:   and once you improve that fetch structure, or whatever, we don't want to repeat it everywhere] 
+
+	Task 10:    Code structure  
+
+	Here is what we are shooting for overall:  
+
+	Most reports that we are looking at come in 3 varieties:  
+	A) one row per record, on a filtered set of records  (like Basic)
+	B) same as A, plus some  summary header / footer row (sorta like Basic plus some Color summary rows) 
+	C) more formatted and not directly corresponding to DB rows (like Color or Contact)  
+
+	We need to be able to create and edit different reports, particularly types A and B,  in a nice DRY fashion.   This is because a lot of the feedback and back-and-forth on the reports is going to be about the details of how individual columns are calculated, and how rows are filtered and ordered.    Also, performance will be important, with 100K-300K row reports pretty common.   
+	Also, we output format is going to be something we might have to change.     Or, more likely,  we might need to improve DB, CPU, or RAM   performance, by changing around the query and retrieve pattern.       And we might have 10-15 report variations.   
+
+	So, we want the report defs to be very DRY and focus mainly on the row-and-column calculations.   And for A and B, it can mainly be row calculations.    If we've got a speedy / low-mem way to pull and report on 100K rows, we don't want to repeat the code in every variation.   
+
+	Main deliverable:  I would like to easily see how I can make three variations on Basic Customer, with a bunch of different custom columns, mainly by specifying and coding up those custom columns.      I would like to write the accuracy test (leveraging some modules / helpers), then mainly only have to code the report-specific behavior:    custom columns, column ordering and headers, maybe some hardcoded filtering and ordering.    
 
 </pre>
