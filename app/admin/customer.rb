@@ -16,6 +16,7 @@ ActiveAdmin.register Customer do
     end
     # status_tag 'In Progress'
     column :code
+    column :customer_type
     column :name
     column :email
     column :phone
@@ -37,6 +38,7 @@ ActiveAdmin.register Customer do
 
   form do |f|
     f.inputs "Basic Info" do
+      f.input :customer_type
       f.input :name
       f.input :email
       f.input :phone
@@ -65,6 +67,8 @@ ActiveAdmin.register Customer do
   end
 
   filter :gender
+  filter :city
+  filter :customer_type
   filter :name, filters: [ :contains ]
   filter :has_one_of_these_colors, collection: Customer::VALID_COLORS, as: :select
   filter :has_any_of_these_colors, as: :check_boxes, 
@@ -85,8 +89,8 @@ ActiveAdmin.register Customer do
     )
   end
 
-  permit_params :name, :email, :phone, :gender, 
-                :address, :city, :country, :zip_code,
+  permit_params :customer_type_id, :name, :email, :phone, :gender, 
+                :address, :city_id, :country, :zip_code,
                 :age, contacts: Customer::CONTACT_TYPES, favorite_colors: []
 
   controller do

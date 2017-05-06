@@ -16,6 +16,9 @@ class Customer < ApplicationRecord
 	]
 
 	CONTACT_TYPES_STORE_ACCESSOR = [ :contacts ] + CONTACT_TYPES
+
+  belongs_to :city
+  belongs_to :customer_type
 	
 	enumerize :gender, in: VALID_GENDERS
 	enumerize :favorite_colors, in: VALID_COLORS, multiple: true
