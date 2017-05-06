@@ -1,3 +1,10 @@
+# Customer Type
+CustomerType.create(name: "A")
+CustomerType.create(name: "B")
+CustomerType.create(name: "C")
+
+customer_type_ids = CustomerType.ids
+
 # City data
 100.times do
 	City.create(
@@ -16,6 +23,7 @@ city_ids = City.ids
 		gender:   Faker::Boolean.boolean ? "male" : "female",
 		address: 	"#{Faker::Address.secondary_address}, #{Faker::Address.street_name}, #{Faker::Address.street_address}",	
 		city_id: 	city_ids.sample,
+		customer_type_id: customer_type_ids.sample,
 		country: 	Faker::Address.country,
 		zip_code: Faker::Address.zip_code,
 		age:      Faker::Number.between(18, 99),

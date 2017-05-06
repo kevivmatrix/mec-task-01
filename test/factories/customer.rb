@@ -10,6 +10,7 @@ FactoryGirl.define do
     gender "female"
     address "Address 123"
     association :city, factory: :city
+    association :customer_type, factory: :customer_type
     country "Country"
     zip_code "123456"
     age 21
