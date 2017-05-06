@@ -1,7 +1,4 @@
-ActiveAdmin.register Report do
-
-	ALL_REPORTS = %w{ BasicCustomerReport CustomerColorReport CustomerContactAgeReport }
-	CUSTOMER_FILTERABLE_REPORTS = %w{ BasicCustomerReport CustomerContactAgeReport }
+ActiveAdmin.register Report do 
 
 	index do
 		column :file do |report|
@@ -11,9 +8,14 @@ ActiveAdmin.register Report do
 				"Generating..."
 			end
 		end
+		column :type
 		column :parameters do |report|
-			report.translate_ransack_parameters.
-				gsub("\n", "<br/>").html_safe
+			translated_parameters = report.translate_ransack_parameters
+			if translated_parameters.present?
+				translated_parameters.gsub("\n", "<br/>").html_safe
+			else
+				"None"
+			end
 		end
 		tag_column :status
 		column :status_description
@@ -24,9 +26,9 @@ ActiveAdmin.register Report do
 		f.inputs do
 			f.input :label
 			if params[:parameters].present?
-				f.input :type, as: :select, collection: CUSTOMER_FILTERABLE_REPORTS
+				f.input :type, as: :select, collection: %w{ BasicCustomerReport CustomerContactAgeReport }
 			else
-				f.input :type, as: :select, collection: ALL_REPORTS
+				f.input :type, as: :select, collection: %w{ BasicCustomerReport CustomerColorReport CustomerContactAgeReport }
 			end
 			f.input :parameters, as: :text
 		end

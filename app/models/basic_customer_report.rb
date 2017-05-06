@@ -17,15 +17,26 @@ class BasicCustomerReport < Report
 	def data_for_csv
 		CSV.generate do |csv|
 		  csv << CSV_COLUMNS.map(&:titleize)
-		  customers = Customer.ransack(parameters["q"])
+		  customers = Customer.includes(:city, :customer_type).
+		  							ransack(parameters["q"])
 		  if parameters["order"].present?
 		  	customers.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
 		  end
-		  customers.result.each do |customer|
-		  	csv << CSV_COLUMNS.map do |column|
-		  		send column, customer
-		  	end
-		  end
+		  batch_size = 250
+			ids = customers.result.ids
+			ids.each_slice(batch_size) do |chunk|
+		    Customer.includes(:city, :customer_type).find(chunk).each do |customer|
+		    	csv << CSV_COLUMNS.map do |column|
+			  		send column, customer
+			  	end
+		    end
+			end
+			# Order does not work as find_each resets the order ID ASC
+		  # customers.result.find_each(batch_size: 250) do |customer|
+		  # 	csv << CSV_COLUMNS.map do |column|
+		  # 		send column, customer
+		  # 	end
+		  # end
 		end
 	end
 	

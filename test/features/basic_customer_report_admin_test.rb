@@ -23,6 +23,7 @@ feature "BasicCustomerReportAdminTest" do
       basic_customer_report = BasicCustomerReport.last
       page.must_have_content "label1.csv"
       page.must_have_content "Completed"
+      page.must_have_content "None"
       
       page.find(:link, "label1.csv").click
       page.response_headers['Content-Type'].must_equal "text/csv"

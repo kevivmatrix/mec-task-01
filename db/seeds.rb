@@ -15,7 +15,7 @@ end
 city_ids = City.ids
 
 # Customer Sample Data
-100_000.times do
+200_000.times do
 	Customer.create(
 		name: 		Faker::Name.name,
 		email: 		Faker::Internet.email,
