@@ -34,7 +34,7 @@ feature "BasicCustomerReportAdminTest" do
       last_customer_data = csv_data[-1]
 
       assert_equal 23, header_column.count
-      assert_equal header_column, BasicCustomerReport::CSV_COLUMNS.map(&:titleize)
+      assert_equal header_column, BasicCustomerReport::CSV_COLUMNS.values
       assert_equal 4, csv_data.count
 
       assert_equal "Customer 1", first_customer_data[0]

@@ -1,6 +1,8 @@
 class Report < ApplicationRecord
 	extend Enumerize
 
+	attr_accessor :filtered_data
+
 	mount_uploader :file, FileUploader
 	
 	VALID_STATUSES = %w{ waiting processing completed failed }
@@ -24,7 +26,7 @@ class Report < ApplicationRecord
 	end
 
 	def generate_csv
-		apply_filters
+		apply_filters if private_methods.include?(:apply_filters)
 		CSV.generate do |csv|
 			data_for_csv csv
 		end

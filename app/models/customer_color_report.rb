@@ -6,8 +6,6 @@ class CustomerColorReport < Report
 
 	store_accessor *PARAMETERS_STORE_ACCESSOR
 
-  attr_accessor :customers
-
   CSV_COLUMNS = {
     color_name: "Color",
     color_customers_count: "# Customers favorited",
@@ -17,7 +15,6 @@ class CustomerColorReport < Report
   private
 
     def data_for_csv csv
-      set_customers
       csv << CSV_COLUMNS.values
       colors.each do |color|
         data = []
@@ -36,11 +33,11 @@ class CustomerColorReport < Report
     end
 
     def color_customers_count color
-      customers.where("favorite_colors && '{#{color}}'").count
+      filtered_data.where("favorite_colors && '{#{color}}'").count
     end
 
     def unique_color_customers_count color
-      customers.where("favorite_colors = '{#{color}}'").count
+      filtered_data.where("favorite_colors = '{#{color}}'").count
     end
 
     def average_number_of_colors_per_customer
@@ -51,12 +48,12 @@ class CustomerColorReport < Report
       (customers_with_colors_count / colors.count.to_f).round(3)
     end
 
-    def set_customers
-      @customers = Customer.ransack(parameters["q"])
+    def apply_filters
+      @filtered_data = Customer.ransack(parameters["q"])
       if parameters["order"].present?
-        @customers.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
+        @filtered_data.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
       end
-      @customers = @customers.result
+      @filtered_data = @filtered_data.result
     end
 
     def colors
@@ -64,15 +61,15 @@ class CustomerColorReport < Report
     end
 
     def customers_with_colors_count
-      customers.where("favorite_colors != '{}'").count
+      filtered_data.where("favorite_colors != '{}'").count
     end
 
     def customers_count
-      customers.count
+      filtered_data.count
     end
 
     def total_colors_set_by_customers
-      customers.sum("array_length(favorite_colors, 1)")
+      filtered_data.sum("array_length(favorite_colors, 1)")
     end
 
 end

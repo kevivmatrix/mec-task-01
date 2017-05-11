@@ -6,8 +6,6 @@ class CustomerContactAgeReport < Report
 
 	store_accessor *PARAMETERS_STORE_ACCESSOR
 
-  attr_accessor :customers
-
   CSV_COLUMNS = {
     contact_type_name: "Contact Type",
     contact_type_customers_count: "# Customers",
@@ -19,7 +17,6 @@ class CustomerContactAgeReport < Report
   private
 
     def data_for_csv csv
-      set_customers
       csv << CSV_COLUMNS.values
       contact_types.each do |contact_type|
         data = []
@@ -55,15 +52,15 @@ class CustomerContactAgeReport < Report
     end
 
     def contact_type_customers contact_type
-      customers.where("contacts::jsonb ? '#{contact_type}'")
+      filtered_data.where("contacts::jsonb ? '#{contact_type}'")
     end
 
-    def set_customers
-      @customers = Customer.ransack(parameters["q"])
+    def apply_filters
+      @filtered_data = Customer.ransack(parameters["q"])
       if parameters["order"].present?
-        @customers.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
+        @filtered_data.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
       end
-      @customers = @customers.result
+      @filtered_data = @filtered_data.result
     end
 
 end
