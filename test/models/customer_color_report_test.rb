@@ -23,7 +23,7 @@ class CustomerColorReportTest < ActiveSupport::TestCase
 		customer_6 = FactoryGirl.create :customer, favorite_colors: []
 		customer_color_report = FactoryGirl.create :customer_color_report
 
-		csv_data = customer_color_report.data_for_csv
+		csv_data = customer_color_report.generate_csv
 		csv_data_lines = csv_data.split("\n")
 
 		assert_equal "Color,# Customers favorited,# Customers only favorited", csv_data_lines[0]

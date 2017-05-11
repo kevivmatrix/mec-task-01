@@ -13,14 +13,15 @@ class CustomerColorReport < Report
     color_customers_count: "# Customers favorited",
     unique_color_customers_count: "# Customers only favorited"
   }
+  
+  private
 
-	def data_for_csv
-    set_customers
-		CSV.generate do |csv|
+    def data_for_csv csv
+      set_customers
       csv << CSV_COLUMNS.values
       colors.each do |color|
         data = []
-		    CSV_COLUMNS.each do |method_name, header|
+        CSV_COLUMNS.each do |method_name, header|
           data << send(method_name, color)
         end
         csv << data
@@ -28,10 +29,7 @@ class CustomerColorReport < Report
       csv << []
       csv << [ "Average # of Colors per Customer", average_number_of_colors_per_customer ]
       csv << [ "Average # of Customers per Color", average_number_of_customers_per_color ]
-		end
-	end
-
-  private
+    end
 
     def color_name color
       color

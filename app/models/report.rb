@@ -15,11 +15,18 @@ class Report < ApplicationRecord
 	end
 
 	def generate format="csv"
-		data = send("data_for_#{format}")
+		data = send("generate_#{format}")
 		File.open(temp_report_file_path(format), 'w') do |temp_file|
 			temp_file.write(data)
 			self.file = temp_file
 			self.save
+		end
+	end
+
+	def generate_csv
+		apply_filters
+		CSV.generate do |csv|
+			data_for_csv csv
 		end
 	end
 

@@ -16,10 +16,11 @@ class CustomerContactAgeReport < Report
     average_age_with_contact_type: "Avg. Age"
   }
 
-	def data_for_csv
-    set_customers
-		CSV.generate do |csv|
-		  csv << CSV_COLUMNS.values
+  private
+
+    def data_for_csv csv
+      set_customers
+      csv << CSV_COLUMNS.values
       contact_types.each do |contact_type|
         data = []
         CSV_COLUMNS.each do |method_name, header|
@@ -27,10 +28,7 @@ class CustomerContactAgeReport < Report
         end
         csv << data
       end
-		end
-	end
-
-  private
+    end
 
     def contact_types
       Customer::CONTACT_TYPES

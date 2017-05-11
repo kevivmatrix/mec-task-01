@@ -14,16 +14,13 @@ class BasicCustomerReport < Report
 
 	store_accessor *PARAMETERS_STORE_ACCESSOR
 
-	def data_for_csv
-		CSV.generate do |csv|
+	private
+		
+		def data_for_csv csv
+			set_customers
 		  csv << CSV_COLUMNS.map(&:titleize)
-		  customers = Customer.includes(:city, :customer_type).
-		  							ransack(parameters["q"])
-		  if parameters["order"].present?
-		  	customers.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
-		  end
 		  batch_size = 250
-			ids = customers.result.ids
+			ids = @customers.result.ids
 			ids.each_slice(batch_size) do |chunk|
 		    Customer.includes(:city, :customer_type).find(chunk).each do |customer|
 		    	csv << CSV_COLUMNS.map do |column|
@@ -31,16 +28,15 @@ class BasicCustomerReport < Report
 			  	end
 		    end
 			end
-			# Order does not work as find_each resets the order ID ASC
-		  # customers.result.find_each(batch_size: 250) do |customer|
-		  # 	csv << CSV_COLUMNS.map do |column|
-		  # 		send column, customer
-		  # 	end
-		  # end
 		end
-	end
-	
-	private
+
+		def set_customers
+      @customers = Customer.includes(:city, :customer_type).
+      							ransack(parameters["q"])
+      if parameters["order"].present?
+        @customers.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
+      end
+    end
 
 		def favorite_colors customer
 			customer.favorite_colors.join(", ")
