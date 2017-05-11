@@ -14,8 +14,11 @@ class CustomerColorReport < Report
   
   private
 
+    def header
+      CSV_COLUMNS.values
+    end
+
     def data_for_csv csv
-      csv << CSV_COLUMNS.values
       colors.each do |color|
         data = []
         CSV_COLUMNS.each do |method_name, header|

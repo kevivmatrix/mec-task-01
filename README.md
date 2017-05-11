@@ -200,7 +200,7 @@ Task 9)  performance check
 
 	[Segue:   and once you improve that fetch structure, or whatever, we don't want to repeat it everywhere] 
 
-	Task 10:    Code structure  
+Task 10)    Code structure  
 
 	Here is what we are shooting for overall:  
 

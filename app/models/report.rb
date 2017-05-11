@@ -28,6 +28,7 @@ class Report < ApplicationRecord
 	def generate_csv
 		apply_filters if private_methods.include?(:apply_filters)
 		CSV.generate do |csv|
+			csv << header
 			data_for_csv csv
 		end
 	end

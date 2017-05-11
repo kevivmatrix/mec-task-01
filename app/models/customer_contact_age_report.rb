@@ -16,8 +16,11 @@ class CustomerContactAgeReport < Report
 
   private
 
+    def header
+      CSV_COLUMNS.values
+    end
+
     def data_for_csv csv
-      csv << CSV_COLUMNS.values
       contact_types.each do |contact_type|
         data = []
         CSV_COLUMNS.each do |method_name, header|

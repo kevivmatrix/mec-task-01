@@ -34,8 +34,11 @@ class BasicCustomerReport < Report
 
 	private
 
+		def header
+			CSV_COLUMNS.values
+		end
+
 		def data_for_csv csv
-		  csv << CSV_COLUMNS.values
 		  batch_size = 250
 			ids = filtered_data.result.ids
 			ids.each_slice(batch_size) do |chunk|
