@@ -6,6 +6,7 @@ class Report < ApplicationRecord
 	mount_uploader :file, FileUploader
 	
 	VALID_STATUSES = %w{ waiting processing completed failed }
+	BATCH_SIZE = 250
 
 	enumerize :status, in: VALID_STATUSES, default: "waiting", predicates: true
 
@@ -73,6 +74,13 @@ class Report < ApplicationRecord
 
 		def temp_report_file_path format
       Rails.root.join("tmp", temp_report_file_name(format))
+    end
+
+    def formatted_data_batch &block
+			ids = filtered_data.result.ids
+			ids.each_slice(BATCH_SIZE) do |chunk|
+				yield chunk
+			end
     end
 
     def temp_report_file_name format

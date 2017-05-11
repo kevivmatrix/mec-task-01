@@ -39,9 +39,7 @@ class BasicCustomerReport < Report
 		end
 
 		def data_for_csv csv
-		  batch_size = 250
-			ids = filtered_data.result.ids
-			ids.each_slice(batch_size) do |chunk|
+		  formatted_data_batch do |chunk|
 		    Customer.includes(:city, :customer_type).find(chunk).each do |customer|
 		    	csv << CSV_COLUMNS.keys.map do |column|
 			  		send column, customer
