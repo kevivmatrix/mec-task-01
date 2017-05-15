@@ -27,7 +27,8 @@ class Report < ApplicationRecord
 	end
 
 	def generate_csv
-		apply_filters if private_methods.include?(:apply_filters)
+		apply_filters
+		apply_sorting
 		CSV.generate do |csv|
 			csv << header
 			data_for_csv csv
@@ -92,6 +93,16 @@ class Report < ApplicationRecord
     		"report_#{id}"
     	end
     	"#{file_name}.#{format}"
+    end
+
+    def empty_row csv
+    	csv << []
+    end
+
+    def apply_sorting
+    	if parameters["order"].present?
+        @filtered_data.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
+      end
     end
 
 end

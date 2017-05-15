@@ -52,10 +52,7 @@ class BasicCustomerReport < Report
 
 		def apply_filters
       @filtered_data = Customer.includes(:city, :customer_type).
-      							ransack(parameters["q"])
-      if parameters["order"].present?
-        @filtered_data.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
-      end
+      									ransack(parameters["q"])
     end
 
 		def favorite_colors customer

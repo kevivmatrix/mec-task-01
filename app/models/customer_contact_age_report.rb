@@ -57,15 +57,11 @@ class CustomerContactAgeReport < Report
     end
 
     def contact_type_customers contact_type
-      filtered_data.where("contacts::jsonb ? '#{contact_type}'")
+      filtered_data.result.where("contacts::jsonb ? '#{contact_type}'")
     end
 
     def apply_filters
       @filtered_data = Customer.ransack(parameters["q"])
-      if parameters["order"].present?
-        @filtered_data.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
-      end
-      @filtered_data = @filtered_data.result
     end
 
 end
