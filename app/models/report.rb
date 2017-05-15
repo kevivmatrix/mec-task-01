@@ -6,7 +6,6 @@ class Report < ApplicationRecord
 	mount_uploader :file, FileUploader
 	
 	VALID_STATUSES = %w{ waiting processing completed failed }
-	BATCH_SIZE = 250
 
 	enumerize :status, in: VALID_STATUSES, default: "waiting", predicates: true
 
@@ -15,6 +14,10 @@ class Report < ApplicationRecord
 
 	after_create do
 		ReportJob.perform_later(self)
+	end
+
+	def self.batch_size
+		250
 	end
 
 	def generate format="csv"
@@ -79,7 +82,7 @@ class Report < ApplicationRecord
 
     def formatted_data_batch &block
 			ids = filtered_data.result.ids
-			ids.each_slice(BATCH_SIZE) do |chunk|
+			ids.each_slice(self.class.batch_size) do |chunk|
 				yield chunk
 			end
     end
@@ -97,6 +100,10 @@ class Report < ApplicationRecord
 
     def empty_row csv
     	csv << []
+    end
+
+    def apply_filters
+      @filtered_data = self.class.core_scope.ransack(parameters["q"])
     end
 
     def apply_sorting

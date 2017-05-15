@@ -16,6 +16,10 @@ class CustomerContactAgeReport < Report
     }
   end
 
+  def self.core_scope
+    Customer.all
+  end
+
   private
 
     def header
@@ -57,11 +61,11 @@ class CustomerContactAgeReport < Report
     end
 
     def contact_type_customers contact_type
-      filtered_data.result.where("contacts::jsonb ? '#{contact_type}'")
+      filtered_data_result.where("contacts::jsonb ? '#{contact_type}'")
     end
 
-    def apply_filters
-      @filtered_data = Customer.ransack(parameters["q"])
+    def filtered_data_result
+      @filtered_data_result ||= filtered_data.result
     end
 
 end

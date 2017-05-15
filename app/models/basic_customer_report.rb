@@ -4,6 +4,8 @@ class BasicCustomerReport < Report
 
 	PARAMETERS_STORE_ACCESSOR = [ :parameters ] + PARAMETERS
 
+	store_accessor *PARAMETERS_STORE_ACCESSOR
+	
 	def self.csv_columns
 		{
 			name: "Name",
@@ -32,7 +34,9 @@ class BasicCustomerReport < Report
 		}
 	end
 
-	store_accessor *PARAMETERS_STORE_ACCESSOR
+	def self.core_scope
+    Customer.all
+  end
 
 	private
 

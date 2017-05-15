@@ -13,6 +13,10 @@ class CustomerColorReport < Report
       unique_color_customers_count: "# Customers only favorited"
     }
   end
+
+  def self.core_scope
+    Customer.all
+  end
   
   private
 
@@ -38,11 +42,11 @@ class CustomerColorReport < Report
     end
 
     def color_customers_count color
-      filtered_data.result.where("favorite_colors && '{#{color}}'").count
+      filtered_data_result.where("favorite_colors && '{#{color}}'").count
     end
 
     def unique_color_customers_count color
-      filtered_data.result.where("favorite_colors = '{#{color}}'").count
+      filtered_data_result.where("favorite_colors = '{#{color}}'").count
     end
 
     def average_number_of_colors_per_customer
@@ -62,15 +66,19 @@ class CustomerColorReport < Report
     end
 
     def customers_with_colors_count
-      filtered_data.result.where("favorite_colors != '{}'").count
+      filtered_data_result.where("favorite_colors != '{}'").count
     end
 
     def customers_count
-      filtered_data.result.count
+      filtered_data_result.count
     end
 
     def total_colors_set_by_customers
-      filtered_data.result.sum("array_length(favorite_colors, 1)")
+      filtered_data_result.sum("array_length(favorite_colors, 1)")
+    end
+
+    def filtered_data_result
+      @filtered_data_result ||= filtered_data.result
     end
 
 end
