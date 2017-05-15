@@ -21,17 +21,17 @@ class BasicCustomerReportTest < ActiveSupport::TestCase
 		
 		csv_data = basic_customer_report.generate_csv
 		csv_data_lines = csv_data.split("\n")
-		csv_columns = BasicCustomerReport::CSV_COLUMNS
+		csv_columns = BasicCustomerReport.csv_columns
 		titleized_csv_columns = csv_columns.values.join(",")
 
 		customer_1_data = CSV.generate do |csv|
-	  	csv << BasicCustomerReport::CSV_COLUMNS.keys.map do |column|
+	  	csv << BasicCustomerReport.csv_columns.keys.map do |column|
 	  		basic_customer_report.send column, customer_1
 	  	end
 		end
 
 		customer_2_data = CSV.generate do |csv|
-	  	csv << BasicCustomerReport::CSV_COLUMNS.keys.map do |column|
+	  	csv << BasicCustomerReport.csv_columns.keys.map do |column|
 	  		basic_customer_report.send column, customer_2
 	  	end
 		end

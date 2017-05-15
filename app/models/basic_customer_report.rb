@@ -4,44 +4,46 @@ class BasicCustomerReport < Report
 
 	PARAMETERS_STORE_ACCESSOR = [ :parameters ] + PARAMETERS
 
-	CSV_COLUMNS = {
-		name: "Name",
-		email: "Email",
-		phone: "Phone",
-		gender: "Gender",
-		address: "Address",
-		city: "City",
-		country: "Country",
-		zip_code: "ZipCode",
-		age: "Age",
-		favorite_colors: "FavoriteColors",
-		facebook: "Facebook",
-		twitter: "Twitter",
-		instagram: "Instagram",
-		pinterest: "Pinterest",
-		linkedin: "Linkedin",
-		reddit: "Reddit",
-		google_plus: "GooglePlus",
-		skype: "Skype",
-		slack: "Slack",
-		landline: "Landline",
-		mobile: "Mobile",
-		customer_created_at: "Created At",
-		customer_updated_at: "Updated At"
-	}
+	def self.csv_columns
+		{
+			name: "Name",
+			email: "Email",
+			phone: "Phone",
+			gender: "Gender",
+			address: "Address",
+			city: "City",
+			country: "Country",
+			zip_code: "ZipCode",
+			age: "Age",
+			favorite_colors: "FavoriteColors",
+			facebook: "Facebook",
+			twitter: "Twitter",
+			instagram: "Instagram",
+			pinterest: "Pinterest",
+			linkedin: "Linkedin",
+			reddit: "Reddit",
+			google_plus: "GooglePlus",
+			skype: "Skype",
+			slack: "Slack",
+			landline: "Landline",
+			mobile: "Mobile",
+			customer_created_at: "Created At",
+			customer_updated_at: "Updated At"
+		}
+	end
 
 	store_accessor *PARAMETERS_STORE_ACCESSOR
 
 	private
 
 		def header
-			CSV_COLUMNS.values
+			self.class.csv_columns.values
 		end
 
 		def data_for_csv csv
 		  formatted_data_batch do |chunk|
 		    Customer.includes(:city, :customer_type).find(chunk).each do |customer|
-		    	csv << CSV_COLUMNS.keys.map do |column|
+		    	csv << self.class.csv_columns.keys.map do |column|
 			  		send column, customer
 			  	end
 		    end
@@ -73,7 +75,7 @@ class BasicCustomerReport < Report
 		end
 
 		def method_missing name, *args
-			if CSV_COLUMNS.keys.include? name
+			if self.class.csv_columns.keys.include? name
 				customer = args[0]
 				customer.send name
 			else

@@ -6,22 +6,24 @@ class CustomerColorReport < Report
 
 	store_accessor *PARAMETERS_STORE_ACCESSOR
 
-  CSV_COLUMNS = {
-    color_name: "Color",
-    color_customers_count: "# Customers favorited",
-    unique_color_customers_count: "# Customers only favorited"
-  }
+  def self.csv_columns
+    {
+      color_name: "Color",
+      color_customers_count: "# Customers favorited",
+      unique_color_customers_count: "# Customers only favorited"
+    }
+  end
   
   private
 
     def header
-      CSV_COLUMNS.values
+      self.class.csv_columns.values
     end
 
     def data_for_csv csv
       colors.each do |color|
         data = []
-        CSV_COLUMNS.each do |method_name, header|
+        self.class.csv_columns.each do |method_name, header|
           data << send(method_name, color)
         end
         csv << data
