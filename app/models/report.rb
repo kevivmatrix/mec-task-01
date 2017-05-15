@@ -1,7 +1,7 @@
 class Report < ApplicationRecord
 	extend Enumerize
 
-	attr_accessor :core_data, :filters
+	attr_accessor :core_data, :filters, :sort
 
 	mount_uploader :file, FileUploader
 	
@@ -26,6 +26,7 @@ class Report < ApplicationRecord
 
 	def generate format="csv"
   	@filters = parameters["q"]
+    @sort = parameters["order"]
   	set_core_data
 		apply_filters
 		apply_sorting
@@ -119,8 +120,8 @@ class Report < ApplicationRecord
     end
 
     def apply_sorting
-			if parameters["order"].present?
-			  @core_data.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
+			if sort.present?
+			  @core_data.sorts = sort.gsub(/(.*)\_(desc|asc)/, '\1 \2')
 			end
     end
 
