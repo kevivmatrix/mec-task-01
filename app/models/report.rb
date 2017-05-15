@@ -1,7 +1,7 @@
 class Report < ApplicationRecord
 	extend Enumerize
 
-	attr_accessor :core_data
+	attr_accessor :core_data, :filters
 
 	mount_uploader :file, FileUploader
 	
@@ -25,6 +25,10 @@ class Report < ApplicationRecord
   end
 
 	def generate format="csv"
+  	@filters = parameters["q"]
+  	set_core_data
+		apply_filters
+		apply_sorting
 		data = send("generate_#{format}")
 		File.open(temp_report_file_path(format), 'w') do |temp_file|
 			temp_file.write(data)
@@ -34,9 +38,6 @@ class Report < ApplicationRecord
 	end
 
 	def generate_csv
-		set_core_data
-		apply_filters
-		apply_sorting
 		CSV.generate do |csv|
 			csv << header
 			data_for_csv csv
@@ -113,7 +114,7 @@ class Report < ApplicationRecord
 
     def apply_filters
     	if self.class.allows_ransack_params
-	      @core_data = self.class.core_scope.ransack(parameters["q"])
+	      @core_data = self.class.core_scope.ransack(filters)
     	end
     end
 
