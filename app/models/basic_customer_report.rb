@@ -55,7 +55,7 @@ class BasicCustomerReport < Report
 		end
 
 		def apply_filters
-      @filtered_data = Customer.includes(:city, :customer_type).
+      @core_data = Customer.includes(:city, :customer_type).
       									ransack(parameters["q"])
     end
 

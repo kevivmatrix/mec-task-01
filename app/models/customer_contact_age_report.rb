@@ -61,11 +61,11 @@ class CustomerContactAgeReport < Report
     end
 
     def contact_type_customers contact_type
-      filtered_data_result.where("contacts::jsonb ? '#{contact_type}'")
+      core_data_result.where("contacts::jsonb ? '#{contact_type}'")
     end
 
-    def filtered_data_result
-      @filtered_data_result ||= filtered_data.result
+    def core_data_result
+      @core_data_result ||= core_data.result
     end
 
 end

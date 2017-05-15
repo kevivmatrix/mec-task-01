@@ -1,7 +1,7 @@
 class Report < ApplicationRecord
 	extend Enumerize
 
-	attr_accessor :filtered_data
+	attr_accessor :core_data
 
 	mount_uploader :file, FileUploader
 	
@@ -20,6 +20,10 @@ class Report < ApplicationRecord
 		250
 	end
 
+	def self.allows_ransack_params
+    true
+  end
+
 	def generate format="csv"
 		data = send("generate_#{format}")
 		File.open(temp_report_file_path(format), 'w') do |temp_file|
@@ -30,6 +34,7 @@ class Report < ApplicationRecord
 	end
 
 	def generate_csv
+		set_core_data
 		apply_filters
 		apply_sorting
 		CSV.generate do |csv|
@@ -81,7 +86,7 @@ class Report < ApplicationRecord
     end
 
     def formatted_data_batch &block
-			ids = filtered_data.result.ids
+			ids = core_data.result.ids
 			ids.each_slice(self.class.batch_size) do |chunk|
 				yield chunk
 			end
@@ -102,14 +107,20 @@ class Report < ApplicationRecord
     	csv << []
     end
 
+    def set_core_data
+    	@core_data = self.class.core_scope
+    end
+
     def apply_filters
-      @filtered_data = self.class.core_scope.ransack(parameters["q"])
+    	if self.class.allows_ransack_params
+	      @core_data = self.class.core_scope.ransack(parameters["q"])
+    	end
     end
 
     def apply_sorting
-    	if parameters["order"].present?
-        @filtered_data.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
-      end
+			if parameters["order"].present?
+			  @core_data.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
+			end
     end
 
 end
