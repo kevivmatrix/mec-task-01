@@ -19,8 +19,8 @@ class BasicCustomerReportTest < ActiveSupport::TestCase
 		customer_2 = FactoryGirl.create :customer, favorite_colors: ["yellow", "green"], contacts: { skype: "skype1" }
 		basic_customer_report = FactoryGirl.create :basic_customer_report
 		
-		csv_data = basic_customer_report.generate_csv
-		csv_data_lines = csv_data.split("\n")
+		basic_customer_report.generate "csv"
+		csv_data_lines = basic_customer_report.file.file.read.split("\n")
 		csv_columns = BasicCustomerReport.csv_columns
 		titleized_csv_columns = csv_columns.values.join(",")
 

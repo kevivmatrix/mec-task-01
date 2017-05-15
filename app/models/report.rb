@@ -114,7 +114,7 @@ class Report < ApplicationRecord
 
     def apply_filters
     	if self.class.allows_ransack_params
-	      @core_data = self.class.core_scope.ransack(filters)
+	      @core_data = @core_data.ransack(filters)
     	end
     end
 
