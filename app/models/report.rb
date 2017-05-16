@@ -106,6 +106,10 @@ class Report < ApplicationRecord
     	csv << []
     end
 
+    def add_row csv, *values
+    	csv << values
+    end
+
     def set_core_data
     	@core_data = self.class.core_scope
     end

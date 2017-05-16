@@ -29,8 +29,8 @@ class CustomerColorReport < Report
         csv << data
       end
       empty_row(csv)
-      csv << [ "Average # of Colors per Customer", average_number_of_colors_per_customer ]
-      csv << [ "Average # of Customers per Color", average_number_of_customers_per_color ]
+      add_row(csv, "Average # of Colors per Customer", average_number_of_colors_per_customer)
+      add_row(csv, "Average # of Customers per Color", average_number_of_customers_per_color)
     end
 
     def color_name color
