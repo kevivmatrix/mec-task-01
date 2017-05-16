@@ -1,4 +1,4 @@
-class BasicCustomerReport < Report
+class BasicCustomerReport < BasicModelListReport
 
 	PARAMETERS = []
 
@@ -35,25 +35,10 @@ class BasicCustomerReport < Report
 	end
 
 	def self.core_scope
-    Customer.all
+    Customer.includes(:city, :customer_type).all
   end
 
 	private
-
-		def data_for_csv csv
-		  formatted_data_batch do |chunk|
-		    Customer.includes(:city, :customer_type).find(chunk).each do |customer|
-		    	csv << self.class.csv_columns.keys.map do |column|
-			  		send column, customer
-			  	end
-		    end
-			end
-		end
-
-		def apply_filters
-      @core_data = Customer.includes(:city, :customer_type).
-      									ransack(parameters["q"])
-    end
 
 		def favorite_colors customer
 			customer.favorite_colors.join(", ")
@@ -69,15 +54,6 @@ class BasicCustomerReport < Report
 
 		def city customer
 			customer.city.name
-		end
-
-		def method_missing name, *args
-			if self.class.csv_columns.keys.include? name
-				customer = args[0]
-				customer.send name
-			else
-				super
-			end
 		end
 
 end

@@ -91,13 +91,6 @@ class Report < ApplicationRecord
       Rails.root.join("tmp", temp_report_file_name(format))
     end
 
-    def formatted_data_batch &block
-			ids = core_data.result.ids
-			ids.each_slice(self.class.batch_size) do |chunk|
-				yield chunk
-			end
-    end
-
     def temp_report_file_name format
     	file_name = if label.present?
     		label.downcase.gsub(" ", "_")
