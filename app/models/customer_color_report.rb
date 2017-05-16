@@ -20,10 +20,6 @@ class CustomerColorReport < Report
   
   private
 
-    def header
-      self.class.csv_columns.values
-    end
-
     def data_for_csv csv
       colors.each do |color|
         data = []

@@ -40,10 +40,6 @@ class BasicCustomerReport < Report
 
 	private
 
-		def header
-			self.class.csv_columns.values
-		end
-
 		def data_for_csv csv
 		  formatted_data_batch do |chunk|
 		    Customer.includes(:city, :customer_type).find(chunk).each do |customer|

@@ -83,6 +83,10 @@ class Report < ApplicationRecord
 
 	private
 
+		def header
+      self.class.csv_columns.values
+    end
+
 		def temp_report_file_path format
       Rails.root.join("tmp", temp_report_file_name(format))
     end

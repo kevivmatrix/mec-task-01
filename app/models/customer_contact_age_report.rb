@@ -22,10 +22,6 @@ class CustomerContactAgeReport < Report
 
   private
 
-    def header
-      self.class.csv_columns.values
-    end
-
     def data_for_csv csv
       contact_types.each do |contact_type|
         data = []
