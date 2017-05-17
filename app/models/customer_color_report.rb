@@ -6,43 +6,43 @@ class CustomerColorReport < Report
 
 	store_accessor *PARAMETERS_STORE_ACCESSOR
 
-  attr_accessor :customers
+  def self.csv_columns
+    {
+      color_name: "Color",
+      color_customers_count: "# Customers favorited",
+      unique_color_customers_count: "# Customers only favorited"
+    }
+  end
 
-  CSV_COLUMNS = {
-    color_name: "Color",
-    color_customers_count: "# Customers favorited",
-    unique_color_customers_count: "# Customers only favorited"
-  }
+  def self.core_scope
+    Customer.all
+  end
+  
+  private
 
-	def data_for_csv
-    set_customers
-		CSV.generate do |csv|
-      csv << CSV_COLUMNS.values
+    def data_for_csv csv
       colors.each do |color|
         data = []
-		    CSV_COLUMNS.each do |method_name, header|
+        self.class.csv_columns.each do |method_name, header|
           data << send(method_name, color)
         end
         csv << data
       end
-      csv << []
-      csv << [ "Average # of Colors per Customer", average_number_of_colors_per_customer ]
-      csv << [ "Average # of Customers per Color", average_number_of_customers_per_color ]
-		end
-	end
-
-  private
+      empty_row(csv)
+      add_row(csv, "Average # of Colors per Customer", average_number_of_colors_per_customer)
+      add_row(csv, "Average # of Customers per Color", average_number_of_customers_per_color)
+    end
 
     def color_name color
       color
     end
 
     def color_customers_count color
-      customers.where("favorite_colors && '{#{color}}'").count
+      core_data_result.where("favorite_colors && '{#{color}}'").count
     end
 
     def unique_color_customers_count color
-      customers.where("favorite_colors = '{#{color}}'").count
+      core_data_result.where("favorite_colors = '{#{color}}'").count
     end
 
     def average_number_of_colors_per_customer
@@ -53,12 +53,8 @@ class CustomerColorReport < Report
       (customers_with_colors_count / colors.count.to_f).round(3)
     end
 
-    def set_customers
-      @customers = Customer.ransack(parameters["q"])
-      if parameters["order"].present?
-        @customers.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
-      end
-      @customers = @customers.result
+    def apply_filters
+      @core_data = Customer.ransack(parameters["q"])
     end
 
     def colors
@@ -66,15 +62,19 @@ class CustomerColorReport < Report
     end
 
     def customers_with_colors_count
-      customers.where("favorite_colors != '{}'").count
+      core_data_result.where("favorite_colors != '{}'").count
     end
 
     def customers_count
-      customers.count
+      core_data_result.count
     end
 
     def total_colors_set_by_customers
-      customers.sum("array_length(favorite_colors, 1)")
+      core_data_result.sum("array_length(favorite_colors, 1)")
+    end
+
+    def core_data_result
+      @core_data_result ||= core_data.result
     end
 
 end

@@ -1,45 +1,43 @@
-class BasicCustomerReport < Report
+class BasicCustomerReport < BasicModelListReport
 
 	PARAMETERS = []
 
 	PARAMETERS_STORE_ACCESSOR = [ :parameters ] + PARAMETERS
 
-	CSV_COLUMNS = %w{ 
-		name email phone gender address city
-		country zip_code age favorite_colors
-		facebook twitter instagram pinterest 
-		linkedin reddit google_plus skype slack
-		landline mobile	customer_created_at customer_updated_at
-	}
-
 	store_accessor *PARAMETERS_STORE_ACCESSOR
-
-	def data_for_csv
-		CSV.generate do |csv|
-		  csv << CSV_COLUMNS.map(&:titleize)
-		  customers = Customer.includes(:city, :customer_type).
-		  							ransack(parameters["q"])
-		  if parameters["order"].present?
-		  	customers.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
-		  end
-		  batch_size = 250
-			ids = customers.result.ids
-			ids.each_slice(batch_size) do |chunk|
-		    Customer.includes(:city, :customer_type).find(chunk).each do |customer|
-		    	csv << CSV_COLUMNS.map do |column|
-			  		send column, customer
-			  	end
-		    end
-			end
-			# Order does not work as find_each resets the order ID ASC
-		  # customers.result.find_each(batch_size: 250) do |customer|
-		  # 	csv << CSV_COLUMNS.map do |column|
-		  # 		send column, customer
-		  # 	end
-		  # end
-		end
-	end
 	
+	def self.csv_columns
+		{
+			name: "Name",
+			email: "Email",
+			phone: "Phone",
+			gender: "Gender",
+			address: "Address",
+			city: "City",
+			country: "Country",
+			zip_code: "ZipCode",
+			age: "Age",
+			favorite_colors: "FavoriteColors",
+			facebook: "Facebook",
+			twitter: "Twitter",
+			instagram: "Instagram",
+			pinterest: "Pinterest",
+			linkedin: "Linkedin",
+			reddit: "Reddit",
+			google_plus: "GooglePlus",
+			skype: "Skype",
+			slack: "Slack",
+			landline: "Landline",
+			mobile: "Mobile",
+			customer_created_at: "Created At",
+			customer_updated_at: "Updated At"
+		}
+	end
+
+	def self.core_scope
+    Customer.includes(:city, :customer_type).all
+  end
+
 	private
 
 		def favorite_colors customer
@@ -56,15 +54,6 @@ class BasicCustomerReport < Report
 
 		def city customer
 			customer.city.name
-		end
-
-		def method_missing name, *args
-			if CSV_COLUMNS.include? name.to_s
-				customer = args[0]
-				customer.send name
-			else
-				super
-			end
 		end
 
 end

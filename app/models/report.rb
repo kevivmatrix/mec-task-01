@@ -1,6 +1,8 @@
 class Report < ApplicationRecord
 	extend Enumerize
 
+	attr_accessor :core_data, :filters, :sort
+
 	mount_uploader :file, FileUploader
 	
 	VALID_STATUSES = %w{ waiting processing completed failed }
@@ -14,12 +16,32 @@ class Report < ApplicationRecord
 		ReportJob.perform_later(self)
 	end
 
+	def self.batch_size
+		250
+	end
+
+	def self.allows_ransack_params
+    true
+  end
+
 	def generate format="csv"
-		data = send("data_for_#{format}")
+  	@filters = parameters["q"]
+    @sort = parameters["order"]
+  	set_core_data
+		apply_filters
+		apply_sorting
+		data = send("generate_#{format}")
 		File.open(temp_report_file_path(format), 'w') do |temp_file|
 			temp_file.write(data)
 			self.file = temp_file
 			self.save
+		end
+	end
+
+	def generate_csv
+		CSV.generate do |csv|
+			csv << header
+			data_for_csv csv
 		end
 	end
 
@@ -61,6 +83,10 @@ class Report < ApplicationRecord
 
 	private
 
+		def header
+      self.class.csv_columns.values
+    end
+
 		def temp_report_file_path format
       Rails.root.join("tmp", temp_report_file_name(format))
     end
@@ -74,6 +100,30 @@ class Report < ApplicationRecord
     		"report_#{id}"
     	end
     	"#{file_name}.#{format}"
+    end
+
+    def empty_row csv
+    	csv << []
+    end
+
+    def add_row csv, *values
+    	csv << values
+    end
+
+    def set_core_data
+    	@core_data = self.class.core_scope
+    end
+
+    def apply_filters
+    	if self.class.allows_ransack_params
+	      @core_data = @core_data.ransack(filters)
+    	end
+    end
+
+    def apply_sorting
+			if sort.present?
+			  @core_data.sorts = sort.gsub(/(.*)\_(desc|asc)/, '\1 \2')
+			end
     end
 
 end

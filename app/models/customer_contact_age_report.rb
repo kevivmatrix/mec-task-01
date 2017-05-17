@@ -6,31 +6,31 @@ class CustomerContactAgeReport < Report
 
 	store_accessor *PARAMETERS_STORE_ACCESSOR
 
-  attr_accessor :customers
+  def self.csv_columns
+    {
+      contact_type_name: "Contact Type",
+      contact_type_customers_count: "# Customers",
+      minimum_age_with_contact_type: "Min. Age",
+      maximum_age_with_contact_type: "Max. Age",
+      average_age_with_contact_type: "Avg. Age"
+    }
+  end
 
-  CSV_COLUMNS = {
-    contact_type_name: "Contact Type",
-    contact_type_customers_count: "# Customers",
-    minimum_age_with_contact_type: "Min. Age",
-    maximum_age_with_contact_type: "Max. Age",
-    average_age_with_contact_type: "Avg. Age"
-  }
+  def self.core_scope
+    Customer.all
+  end
 
-	def data_for_csv
-    set_customers
-		CSV.generate do |csv|
-		  csv << CSV_COLUMNS.values
+  private
+
+    def data_for_csv csv
       contact_types.each do |contact_type|
         data = []
-        CSV_COLUMNS.each do |method_name, header|
+        self.class.csv_columns.each do |method_name, header|
           data << send(method_name, contact_type)
         end
         csv << data
       end
-		end
-	end
-
-  private
+    end
 
     def contact_types
       Customer::CONTACT_TYPES
@@ -57,15 +57,11 @@ class CustomerContactAgeReport < Report
     end
 
     def contact_type_customers contact_type
-      customers.where("contacts::jsonb ? '#{contact_type}'")
+      core_data_result.where("contacts::jsonb ? '#{contact_type}'")
     end
 
-    def set_customers
-      @customers = Customer.ransack(parameters["q"])
-      if parameters["order"].present?
-        @customers.sorts = parameters["order"].gsub(/(.*)\_(desc|asc)/, '\1 \2')
-      end
-      @customers = @customers.result
+    def core_data_result
+      @core_data_result ||= core_data.result
     end
 
 end
