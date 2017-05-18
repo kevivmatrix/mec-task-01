@@ -67,6 +67,8 @@ gem 'delayed_job_active_record'
 gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem 'fog-aws'
 gem 'daemons'
+gem 'redis-rails'
+gem 'active_job_status'
 
 group :production do
   gem 'lograge'

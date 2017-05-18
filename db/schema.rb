@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170518095402) do
+ActiveRecord::Schema.define(version: 20170505212439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,16 +74,6 @@ ActiveRecord::Schema.define(version: 20170518095402) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
-  end
-
-  create_table "job_trackers", force: :cascade do |t|
-    t.string "trackable_type"
-    t.bigint "trackable_id"
-    t.string "status"
-    t.float "percent", default: 0.0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["trackable_type", "trackable_id"], name: "index_job_trackers_on_trackable_type_and_trackable_id"
   end
 
   create_table "reports", force: :cascade do |t|

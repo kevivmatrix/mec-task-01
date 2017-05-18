@@ -1,18 +1,23 @@
 class ReportJob < ApplicationJob
+
+  attr_accessor :report
+
+  include ActiveJobStatus::Hooks
+
   queue_as :default
 
-  rescue_from Exception do |error|
-    @report.failed! error.message
-    end_tracking! "failed"
-    raise error
-  end
-
   def perform report
-    start_tracking! report
-    @report = report
-    @report.processing!
-    @report.generate
-    @report.completed!
-    end_tracking!
+    begin
+      job_status = ActiveJobStatus.fetch(job_id)
+      start_tracking!
+      @report = report
+      @report.processing!
+      @report.generate
+      @report.completed!
+    rescue Exception => error
+      @report.failed! error.message
+    ensure
+      end_tracking!
+    end
   end
 end
