@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(version: 20170518095402) do
     t.string "trackable_type"
     t.bigint "trackable_id"
     t.string "status"
-    t.float "percent"
+    t.float "percent", default: 0.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["trackable_type", "trackable_id"], name: "index_job_trackers_on_trackable_type_and_trackable_id"
