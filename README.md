@@ -216,4 +216,16 @@ Task 10)    Code structure
 
 	Main deliverable:  I would like to easily see how I can make three variations on Basic Customer, with a bunch of different custom columns, mainly by specifying and coding up those custom columns.      I would like to write the accuracy test (leveraging some modules / helpers), then mainly only have to code the report-specific behavior:    custom columns, column ordering and headers, maybe some hardcoded filtering and ordering.    
 
+Task 11)    Progress updating 1:   core functionality.  
+
+	Check out progress_job gem.    TL/DR;   I'd like to have something like that, but without it's critical flaw:   it doesn't work if your core job work is inside a transaction.   
+
+	Reports would be mostly fine with a DB updater.   But imports and other data-modifying jobs have to be transactional.   Even some reports might need a transaction, to prevent race conditions with edits, and inconsistent data.   
+
+	As mentioned in the tech interview, an API call that triggered an update in a job-focused model (like Report or Import, but not Customer) would "escape" the transaction.     We don't need a full-fledged gem for sure.    But being able to call something like update_status(status[, pct])  in the job will really let us give better feedback to the users.  
+
+	How might you approach this?   Feel free to just write some tests first, and sketch ideas if you're not sure; we could discuss.     Although tests are also tricky here.   
+
+	Second part of this task will then be displaying in AA with Ajax, updated every few seconds.   
+
 </pre>
