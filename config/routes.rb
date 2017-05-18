@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   # match "/delayed_job" => DelayedJobWeb, :anchor => false, :via => [:get, :post]
 
-  resources :job_trackers, only: [:show]
+  get "jobs/status" => "jobs#status"
 
   root to: "admin/customers#index"
 end
