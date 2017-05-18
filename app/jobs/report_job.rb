@@ -12,6 +12,7 @@ class ReportJob < ApplicationJob
       start_tracking!
       @report = report
       @report.processing!
+      # TODO - Figure out the percentage logic here
       @report.generate
       @report.completed!
     rescue Exception => error
