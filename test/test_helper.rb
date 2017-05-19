@@ -1,12 +1,24 @@
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require "minitest/rails/capybara"
+require 'fakeredis'
 require 'fakeredis/minitest'
 require 'sidekiq/testing'
 
 Sidekiq::Testing.fake!
 
 Dir[Rails.root.join("test/support/**/*")].each { |f| require f }
+
+redis_options = { url: "redis://127.0.0.1:6379/1" }
+redis_options.merge!(:driver => Redis::Connection::Memory) if defined?(Redis::Connection::Memory)
+
+Sidekiq.configure_client do |config|
+  config.redis = redis_options
+end
+
+Sidekiq.configure_server do |config|
+  config.redis = redis_options
+end
 
 # Capybara.register_driver :selenium do |app| 
 #   profile = Selenium::WebDriver::Firefox::Profile.new 
