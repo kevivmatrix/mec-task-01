@@ -8,9 +8,9 @@ class ReportJob < ApplicationJob
 
   def perform report
     begin
+      @report = report
       job_status = ActiveJobStatus.fetch(job_id)
       start_tracking!
-      @report = report
       @report.processing!
       # TODO - Figure out the percentage logic here
       @report.generate
