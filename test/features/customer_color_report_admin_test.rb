@@ -15,7 +15,8 @@ feature "CustomerColorReportAdminTest" do
     page.find(:css, "#report_label").set("Label1")
     page.find("#report_type option[value='CustomerColorReport']").select_option
 
-    assert_performed_with(job: ReportJob) do
+    # assert_performed_with(job: ReportJob) do
+    Sidekiq::Testing.inline! do
       page.find("input[type='submit']").click
       page.must_have_content "Customer color report was successfully created."
 

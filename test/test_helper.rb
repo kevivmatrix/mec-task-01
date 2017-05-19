@@ -4,6 +4,8 @@ require "minitest/rails/capybara"
 require 'fakeredis/minitest'
 require 'sidekiq/testing'
 
+Sidekiq::Testing.fake!
+
 Dir[Rails.root.join("test/support/**/*")].each { |f| require f }
 
 # Capybara.register_driver :selenium do |app| 

@@ -15,10 +15,8 @@ class ReportJob
       # TODO - Figure out the percentage logic here
       total 100
       at 5, "Almost done"
-      sleep 30
       @report.generate
       at 50, "Almost done"
-      sleep 100
       @report.completed!
     rescue Exception => error
       @report.failed! error.message

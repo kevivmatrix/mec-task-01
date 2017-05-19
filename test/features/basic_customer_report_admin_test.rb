@@ -16,7 +16,8 @@ feature "BasicCustomerReportAdminTest" do
     page.find(:css, "#report_type").set("BasicCustomerReport")
     page.find("#report_type option[value='BasicCustomerReport']").select_option
 
-    assert_performed_with(job: ReportJob) do
+    # assert_performed_with(job: ReportJob) do
+    Sidekiq::Testing.inline! do
       page.find("input[type='submit']").click
       page.must_have_content "Basic customer report was successfully created."
       

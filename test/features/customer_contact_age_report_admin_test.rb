@@ -15,7 +15,8 @@ feature "CustomerContactAgeReportAdminTest" do
     page.find(:css, "#report_label").set("Label1")
     page.find("#report_type option[value='CustomerContactAgeReport']").select_option
 
-    assert_performed_with(job: ReportJob) do
+    # assert_performed_with(job: ReportJob) do
+    Sidekiq::Testing.inline! do
       page.find("input[type='submit']").click
       page.must_have_content "Customer contact age report was successfully created."
 
