@@ -13,7 +13,8 @@ class Report < ApplicationRecord
 	validates_presence_of :type
 
 	after_create do
-		ReportJob.perform_later(self)
+		# ReportJob.perform_later(self.id)
+		ReportJob.perform_async(self.id)
 	end
 
 	def self.batch_size
