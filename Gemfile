@@ -69,7 +69,8 @@ gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem 'fog-aws'
 gem 'daemons'
 gem 'redis-rails'
-gem 'active_job_status'
+# gem 'active_job_status'
+gem 'sidekiq-status'
 
 group :production do
   gem 'lograge'
