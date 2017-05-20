@@ -14,10 +14,15 @@ class BasicModelListReport < Report
     end
 
     def data_for_csv csv
+    	model_index = 0
 		  formatted_data_batch do |chunk|
-		    self.class.core_scope.find(chunk).each do |customer|
-		    	generate_row csv, customer
+		    self.class.core_scope.find(chunk).each do |model|
+		    	generate_row csv, model
 		    end
+				model_index += 250
+				if model_index % 1000 == 0
+					track_background_job( (model_index / core_data_count.to_f) * 100 )
+				end
 			end
 		end
 
@@ -29,8 +34,8 @@ class BasicModelListReport < Report
 
     def method_missing name, *args
 			if column_methods.include? name
-				customer = args[0]
-				customer.send name
+				model = args[0]
+				model.send name
 			else
 				super
 			end
