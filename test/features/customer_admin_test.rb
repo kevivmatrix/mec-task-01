@@ -175,7 +175,8 @@ feature "CustomerAdmin" do
     filter_section.find(:css, "#q_has_any_of_these_colors_green").set(true)
     filter_section.find("input[type='submit']").click
 
-    assert_performed_with(job: ReportJob) do
+    # assert_performed_with(job: ReportJob) do
+    Sidekiq::Testing.inline! do
       page.find(:link, "Generate Report").click
       page.find(:css, "#report_label").set("Label1")
       page.find(:css, "#report_type").set("BasicCustomerReport")
@@ -278,7 +279,8 @@ feature "CustomerAdmin" do
     filter_section.find(:css, "#q_has_any_of_these_colors_green").set(true)
     filter_section.find("input[type='submit']").click
 
-    assert_performed_with(job: ReportJob) do
+    # assert_performed_with(job: ReportJob) do
+    Sidekiq::Testing.inline! do
       page.find(:link, "Generate Report").click
       page.find(:css, "#report_label").set("Label1")
       page.find(:css, "#report_type").set("CustomerContactAgeReport")

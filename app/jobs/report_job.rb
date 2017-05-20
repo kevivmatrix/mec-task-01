@@ -1,15 +1,24 @@
-class ReportJob < ApplicationJob
-  queue_as :default
+# class ReportJob < ApplicationJob # Tracking percent complete doesn't work with ActiveJob
+class ReportJob
+  include Sidekiq::Worker
+  include Sidekiq::Status::Worker
 
-  rescue_from Exception do |error|
-    @report.failed! error.message
-    raise error
-  end
+  attr_accessor :report
 
-  def perform report
-    @report = report
-    @report.processing!
-    @report.generate
-    @report.completed!
+  # queue_as :default
+
+  def perform report_id
+    begin
+      @report = Report.find report_id
+      # start_tracking!
+      @report.processing!
+      @report.generate({ background_job: self })
+      @report.completed!
+    rescue Exception => error
+      @report.failed! error.message
+    ensure
+      # end_tracking!
+      at 100
+    end
   end
 end

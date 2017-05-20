@@ -1,7 +1,7 @@
 class Report < ApplicationRecord
 	extend Enumerize
 
-	attr_accessor :core_data, :filters, :sort
+	attr_accessor :core_data, :filters, :sort, :background_job
 
 	mount_uploader :file, FileUploader
 	
@@ -13,7 +13,9 @@ class Report < ApplicationRecord
 	validates_presence_of :type
 
 	after_create do
-		ReportJob.perform_later(self)
+		# ReportJob.perform_later(self.id)
+		job_id = ReportJob.perform_async(self.id)
+    self.update background_job_id: job_id
 	end
 
 	def self.batch_size
@@ -24,7 +26,9 @@ class Report < ApplicationRecord
     true
   end
 
-	def generate format="csv"
+	def generate options={format: "csv"}
+		format = options[:format] || "csv"
+		@background_job = options[:background_job]
   	@filters = parameters["q"]
     @sort = parameters["order"]
   	set_core_data
@@ -41,7 +45,7 @@ class Report < ApplicationRecord
 	def generate_csv
 		CSV.generate do |csv|
 			csv << header
-			data_for_csv csv
+			data_for_csv(csv)
 		end
 	end
 
@@ -114,6 +118,10 @@ class Report < ApplicationRecord
     	@core_data = self.class.core_scope
     end
 
+    def core_data_count
+    	@core_data_count ||= core_data.result.count
+    end
+
     def apply_filters
     	if self.class.allows_ransack_params
 	      @core_data = @core_data.ransack(filters)
@@ -125,5 +133,11 @@ class Report < ApplicationRecord
 			  @core_data.sorts = sort.gsub(/(.*)\_(desc|asc)/, '\1 \2')
 			end
     end
+
+    def track_background_job percent
+	  	if background_job
+	  		background_job.at percent
+	  	end
+	  end
 
 end

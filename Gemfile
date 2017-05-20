@@ -63,10 +63,14 @@ gem 'enumerize'
 gem 'faker'
 gem 'minitest-rails'
 gem 'country_select'
-gem 'delayed_job_active_record'
+# gem 'delayed_job_active_record'
+gem 'sidekiq'
 gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem 'fog-aws'
 gem 'daemons'
+gem 'redis-rails'
+# gem 'active_job_status'
+gem 'sidekiq-status'
 
 group :production do
   gem 'lograge'
@@ -74,4 +78,5 @@ end
 
 group :test do
   gem 'minitest-rails-capybara'
+  gem 'fakeredis'
 end

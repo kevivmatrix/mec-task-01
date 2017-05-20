@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170505212439) do
+ActiveRecord::Schema.define(version: 20170519170056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20170505212439) do
     t.string "status"
     t.text "status_description"
     t.string "label"
+    t.string "background_job_id"
     t.index ["parameters"], name: "index_reports_on_parameters", using: :gin
   end
 
