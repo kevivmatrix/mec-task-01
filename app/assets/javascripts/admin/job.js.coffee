@@ -9,7 +9,8 @@ $ ->
 					data:
 						job_id: job_id
 					success: (response)->
-						element.closest("tr").find(".report_progress_cell").html(response.percent + "%")
+						view = "<span class='status_tag " + status + "'>" + response.status + " " + response.percent + "%</span>"
+						element.closest("tr").find(".report_progress_cell").html(view)
 						if response.status == null
 							clearInterval element.timer
 			, 5000
