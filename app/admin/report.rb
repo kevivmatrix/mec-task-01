@@ -2,10 +2,12 @@ ActiveAdmin.register Report do
 
 	index do
 		column :file do |report|
-			if report.completed?
-				link_to report.file_name, report.file.url
-			else
-				"Generating..."
+			content_tag :div, data: { job_id: report.background_job_id, status: report.status } do
+				if report.completed?
+					link_to report.file_name, report.file.url
+				else
+					"Generating..."
+				end
 			end
 		end
 		column :type
