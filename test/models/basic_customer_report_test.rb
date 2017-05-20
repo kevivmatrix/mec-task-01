@@ -7,7 +7,7 @@ class BasicCustomerReportTest < ActiveSupport::TestCase
 		# Before Generate
 		assert basic_customer_report.file.url.nil?
 		# Generate
-		basic_customer_report.generate("csv")
+		basic_customer_report.generate
 		# Check generated file
 		assert basic_customer_report.file.present?
 		generated_file_name = File.basename basic_customer_report.file.url
@@ -19,7 +19,7 @@ class BasicCustomerReportTest < ActiveSupport::TestCase
 		customer_2 = FactoryGirl.create :customer, favorite_colors: ["yellow", "green"], contacts: { skype: "skype1" }
 		basic_customer_report = FactoryGirl.create :basic_customer_report
 		
-		basic_customer_report.generate "csv"
+		basic_customer_report.generate
 		csv_data_lines = basic_customer_report.file.file.read.split("\n")
 		csv_columns = BasicCustomerReport.csv_columns
 		titleized_csv_columns = csv_columns.values.join(",")

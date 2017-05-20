@@ -7,7 +7,7 @@ class CustomerContactAgeReportTest < ActiveSupport::TestCase
 		# Before Generate
 		assert customer_contact_age_report.file.url.nil?
 		# Generate
-		customer_contact_age_report.generate("csv")
+		customer_contact_age_report.generate
 		# Check generated file
 		assert customer_contact_age_report.file.present?
 		generated_file_name = File.basename customer_contact_age_report.file.url
@@ -23,7 +23,7 @@ class CustomerContactAgeReportTest < ActiveSupport::TestCase
 		customer_6 = FactoryGirl.create :customer, age: 67, contacts: { landline: "landline6", linkedin: "linkedin6" }
 		customer_contact_age_report = FactoryGirl.create :customer_contact_age_report
 
-		customer_contact_age_report.generate "csv"
+		customer_contact_age_report.generate
 		csv_data_lines = customer_contact_age_report.file.file.read.split("\n")
 
 		assert_equal "Contact Type,# Customers,Min. Age,Max. Age,Avg. Age", csv_data_lines[0]

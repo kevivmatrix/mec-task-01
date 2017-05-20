@@ -7,7 +7,7 @@ class CustomerColorReportTest < ActiveSupport::TestCase
 		# Before Generate
 		assert customer_color_report.file.url.nil?
 		# Generate
-		customer_color_report.generate("csv")
+		customer_color_report.generate
 		# Check generated file
 		assert customer_color_report.file.present?
 		generated_file_name = File.basename customer_color_report.file.url
@@ -23,7 +23,7 @@ class CustomerColorReportTest < ActiveSupport::TestCase
 		customer_6 = FactoryGirl.create :customer, favorite_colors: []
 		customer_color_report = FactoryGirl.create :customer_color_report
 
-		customer_color_report.generate "csv"
+		customer_color_report.generate
 		csv_data_lines = customer_color_report.file.file.read.split("\n")
 
 		assert_equal "Color,# Customers favorited,# Customers only favorited", csv_data_lines[0]
