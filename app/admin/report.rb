@@ -2,7 +2,7 @@ ActiveAdmin.register Report do
 
 	index do
 		column :file do |report|
-			content_tag :div, data: { job_id: report.background_job_id, status: report.status } do
+			content_tag :div, data: { job_id: report.background_job_id, status: report.status }, class: "report_data_cell" do
 				if report.completed?
 					link_to report.file_name, report.file.url
 				else
@@ -19,7 +19,17 @@ ActiveAdmin.register Report do
 				"None"
 			end
 		end
-		tag_column :status
+		column :status do |report|
+			content_tag :div, class: "report_progress_cell" do
+				content_tag(:span, report.status, class: "status_tag #{report.status}") do
+					if report.completed? || report.failed?
+						report.status
+					else
+						"#{report.status} 0%"
+					end
+				end
+			end
+		end
 		column :status_description
 		actions
 	end

@@ -18,6 +18,7 @@ class ReportJob
       @report.failed! error.message
     ensure
       # end_tracking!
+      at 100
     end
   end
 end
