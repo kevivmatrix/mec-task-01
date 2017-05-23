@@ -12,7 +12,7 @@ class ReportJob < ApplicationJob # Tracking percent complete doesn't work with A
       @report = Report.find report_id
       # start_tracking!
       @report.processing!
-      @report.generate({ background_job: self })
+      @report.generate({ active_job_progress: progress })
       @report.completed!
     rescue Exception => error
       @report.failed! error.message

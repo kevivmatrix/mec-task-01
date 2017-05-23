@@ -1,7 +1,7 @@
 class Report < ApplicationRecord
 	extend Enumerize
 
-	attr_accessor :core_data, :filters, :sort, :background_job
+	attr_accessor :core_data, :filters, :sort, :active_job_progress
 
 	mount_uploader :file, FileUploader
 	
@@ -28,7 +28,7 @@ class Report < ApplicationRecord
 
 	def generate options={format: "csv"}
 		format = options[:format] || "csv"
-		@background_job = options[:background_job]
+		@active_job_progress = options[:active_job_progress]
   	@filters = parameters["q"]
     @sort = parameters["order"]
   	set_core_data
@@ -134,9 +134,9 @@ class Report < ApplicationRecord
 			end
     end
 
-    def track_background_job percent
-	  	if background_job
-	  		# background_job.at percent
+    def track_active_job percent
+	  	if active_job_progress
+	  		active_job_progress.progress = percent
 	  	end
 	  end
 

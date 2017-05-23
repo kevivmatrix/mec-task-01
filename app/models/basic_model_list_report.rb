@@ -19,9 +19,9 @@ class BasicModelListReport < Report
 		    self.class.core_scope.find(chunk).each do |model|
 		    	generate_row csv, model
 		    end
-				model_index += 250
-				if model_index % 1000 == 0
-					track_background_job( (model_index / core_data_count.to_f) * 100 )
+				model_index += chunk.size
+				if model_index % 1000 == 0 || core_data_count < 1000
+					track_active_job( (model_index / core_data_count.to_f) * 100 )
 				end
 			end
 		end
