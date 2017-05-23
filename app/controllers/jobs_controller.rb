@@ -7,10 +7,11 @@ class JobsController < ApplicationController
       #   status: job_status.status,
       #   percent: job_status.percent
       # }
-      respose = {
-        status: Sidekiq::Status::status(params[:job_id]),
-        percent: Sidekiq::Status::at(params[:job_id])
-      }
+      # respose = {
+      #   status: Sidekiq::Status::status(params[:job_id]),
+      #   percent: Sidekiq::Status::at(params[:job_id])
+      # }
+      respose = {}
       format.json {
         render json: respose
       }

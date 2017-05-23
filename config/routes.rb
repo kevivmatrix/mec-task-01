@@ -1,5 +1,5 @@
 require 'sidekiq/web'
-require 'sidekiq-status/web'
+# require 'sidekiq-status/web'
 
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)

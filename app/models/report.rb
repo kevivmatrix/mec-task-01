@@ -14,7 +14,7 @@ class Report < ApplicationRecord
 
 	after_create do
 		# ReportJob.perform_later(self.id)
-		job_id = ReportJob.perform_async(self.id)
+		job_id = ReportJob.perform_later(self.id)
     self.update background_job_id: job_id
 	end
 
@@ -136,7 +136,7 @@ class Report < ApplicationRecord
 
     def track_background_job percent
 	  	if background_job
-	  		background_job.at percent
+	  		# background_job.at percent
 	  	end
 	  end
 
