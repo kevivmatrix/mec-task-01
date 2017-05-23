@@ -14,8 +14,8 @@ class Report < ApplicationRecord
 
 	after_create do
 		# ReportJob.perform_later(self.id)
-		job_id = ReportJob.perform_later(self.id)
-    self.update background_job_id: job_id
+		report_job = ReportJob.perform_later(self.id)
+    self.update background_job_id: report_job.job_id
 	end
 
 	def self.batch_size
