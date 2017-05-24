@@ -16,7 +16,7 @@ module MecTask01
     # -- all .rb files in that directory are automatically loaded.
     config.autoload_paths += Dir[Rails.root.join('app', 'serializers', '{**}')]
 
-    config.cache_store = :redis_store, "redis://#{ENV['REDIS_PROVIDER'] || "localhost:6379"}/0/cache", { expires_in: 90.minutes }
+    config.cache_store = :redis_store, "#{ENV['REDISTOGO_URL'] || "redis://localhost:6379/"}0/cache", { expires_in: 90.minutes }
     
     # config.active_job.queue_adapter = :delayed_job
     config.active_job.queue_adapter = :sidekiq
