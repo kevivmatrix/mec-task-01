@@ -43,4 +43,9 @@ class ReportTest < ActiveSupport::TestCase
     assert_equal "basic_customer_report_#{report_without_label.id}.csv", file_name
   end
 
+  test "Background Job ID" do
+    report = FactoryGirl.create :basic_customer_report
+    assert report.background_job_id.present?
+  end
+
 end

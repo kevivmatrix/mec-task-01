@@ -1,4 +1,5 @@
 class ApplicationJob < ActiveJob::Base
+  include ActiveJob::Status
   # include ActiveJobStatus::Hooks
 
   # def start_tracking!

@@ -179,7 +179,7 @@ Task 9)    User-friendly report handling.
 
 	It would be nice to have a more  readable interpretation of those ransack parameters.    AA prints one in the right column, under the filters.      See if you could leverage that, or copy the code out, to add a "filter description" to the report object.   Or perhaps there is a different gem or gist out there for translating ransack speak into english?
 
-Task 9)  performance check
+Task 10)  performance check
 
 	First, add some DB load:   
 	- Add a Customer Type model (make up a few options), so that Customer belongs to Customer Type.   
@@ -200,7 +200,7 @@ Task 9)  performance check
 
 	[Segue:   and once you improve that fetch structure, or whatever, we don't want to repeat it everywhere] 
 
-Task 10)    Code structure  
+Task 11)    Code structure  
 
 	Here is what we are shooting for overall:  
 
@@ -216,7 +216,7 @@ Task 10)    Code structure
 
 	Main deliverable:  I would like to easily see how I can make three variations on Basic Customer, with a bunch of different custom columns, mainly by specifying and coding up those custom columns.      I would like to write the accuracy test (leveraging some modules / helpers), then mainly only have to code the report-specific behavior:    custom columns, column ordering and headers, maybe some hardcoded filtering and ordering.    
 
-Task 11)    Progress updating 1:   core functionality.  
+Task 12)    Progress updating 1:   core functionality.  
 
 	Check out progress_job gem.    TL/DR;   I'd like to have something like that, but without it's critical flaw:   it doesn't work if your core job work is inside a transaction.   
 

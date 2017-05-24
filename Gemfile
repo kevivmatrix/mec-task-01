@@ -70,7 +70,8 @@ gem 'fog-aws'
 gem 'daemons'
 gem 'redis-rails'
 # gem 'active_job_status'
-gem 'sidekiq-status'
+# gem 'sidekiq-status'
+gem 'activejob-status', github: 'inkstak/activejob-status'
 
 group :production do
   gem 'lograge'

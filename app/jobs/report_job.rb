@@ -1,7 +1,7 @@
-# class ReportJob < ApplicationJob # Tracking percent complete doesn't work with ActiveJob
-class ReportJob
-  include Sidekiq::Worker
-  include Sidekiq::Status::Worker
+class ReportJob < ApplicationJob # Tracking percent complete doesn't work with ActiveJob
+# class ReportJob
+  # include Sidekiq::Worker
+  # include Sidekiq::Status::Worker
 
   attr_accessor :report
 
@@ -12,13 +12,13 @@ class ReportJob
       @report = Report.find report_id
       # start_tracking!
       @report.processing!
-      @report.generate({ background_job: self })
+      @report.generate({ active_job_progress: progress })
       @report.completed!
     rescue Exception => error
       @report.failed! error.message
     ensure
       # end_tracking!
-      at 100
+      # at 100
     end
   end
 end
