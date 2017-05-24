@@ -14,7 +14,7 @@ class JobsController < ApplicationController
       job_status = ActiveJob::Status.get(params[:job_id])
       response = {
         status: job_status.status,
-        percent: job_status.progress
+        percent: job_status.progress.round(2)
       }
       format.json {
         render json: response

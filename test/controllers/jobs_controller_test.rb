@@ -14,7 +14,7 @@ class JobsControllerTest < ActionDispatch::IntegrationTest
 
 	    response = JSON.parse @response.body
 	    assert_equal "completed", response["status"]
-	    assert_equal 0, response["percent"]
+	    assert_equal 100.0, response["percent"]
 	  end
   end
 

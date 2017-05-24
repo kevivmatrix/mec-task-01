@@ -136,7 +136,7 @@ class Report < ApplicationRecord
 
     def track_active_job percent
 	  	if active_job_progress
-	  		active_job_progress.progress = percent
+	  		active_job_progress.progress = percent * 100
 	  	end
 	  end
 
