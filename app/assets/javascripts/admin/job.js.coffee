@@ -11,6 +11,6 @@ $ ->
 					success: (response)->
 						view = "<span class='status_tag " + status + "'>" + response.status + " " + response.percent + "%</span>"
 						element.closest("tr").find(".report_progress_cell").html(view)
-						if response.status == null
+						if response.status == "completed"
 							clearInterval element.timer
 			, 5000
